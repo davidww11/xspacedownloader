@@ -8,14 +8,12 @@ import re
 import json
 import logging
 from datetime import datetime
-from flask import Flask, request, jsonify
+from http.server import BaseHTTPRequestHandler
 import yt_dlp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-app = Flask(__name__)
 
 class TwitterVideoDownloader:
     def __init__(self):
@@ -159,24 +157,29 @@ class TwitterVideoDownloader:
 # Initialize downloader
 downloader = TwitterVideoDownloader()
 
-def handler(request):
-    """Vercel serverless function handler"""
-    
-    # Handle CORS
-    headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-    }
-    
-    if request.method == 'OPTIONS':
-        return ('', 200, headers)
-    
-    if request.method == 'POST':
+class handler(BaseHTTPRequestHandler):
+    def _set_headers(self, status_code=200):
+        self.send_response(status_code)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+
+    def do_OPTIONS(self):
+        self._set_headers()
+        self.wfile.write(b'')
+
+    def do_POST(self):
         try:
-            data = request.get_json()
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode('utf-8'))
+            
             if not data or 'url' not in data:
-                return (jsonify({'error': 'URL is required'}), 400, headers)
+                self._set_headers(400)
+                self.wfile.write(json.dumps({'error': 'URL is required'}).encode('utf-8'))
+                return
             
             url = data['url']
             format_type = data.get('format', 'mp4')
@@ -186,17 +189,24 @@ def handler(request):
             video_info = downloader.extract_video_info(url)
             
             if not video_info['formats']:
-                return (jsonify({'error': 'No downloadable video formats found'}), 404, headers)
+                self._set_headers(404)
+                self.wfile.write(json.dumps({'error': 'No downloadable video formats found'}).encode('utf-8'))
+                return
             
             logger.info(f"Successfully extracted video info: {video_info['title']}")
             
-            return (jsonify(video_info), 200, headers)
+            self._set_headers(200)
+            self.wfile.write(json.dumps(video_info).encode('utf-8'))
             
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
-            return (jsonify({'error': str(e)}), 400, headers)
+            self._set_headers(400)
+            self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
         except Exception as e:
             logger.error(f"Unexpected error: {str(e)}")
-            return (jsonify({'error': 'Internal server error occurred'}), 500, headers)
-    
-    return (jsonify({'error': 'Method not allowed'}), 405, headers) 
+            self._set_headers(500)
+            self.wfile.write(json.dumps({'error': 'Internal server error occurred'}).encode('utf-8'))
+
+    def do_GET(self):
+        self._set_headers(405)
+        self.wfile.write(json.dumps({'error': 'Method not allowed'}).encode('utf-8')) 

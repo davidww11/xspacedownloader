@@ -1,153 +1,171 @@
 # Twitter Video Downloader
 
-A professional, responsive web application for downloading Twitter videos. Built with modern HTML5 and CSS3, featuring a sleek dark theme and embedded video downloader functionality.
+A modern web application for downloading Twitter/X videos with a clean UI inspired by x-downloader.com.
 
 ## 🚀 Features
 
-- **Free Twitter Video Downloads** - Download Twitter videos instantly without registration
-- **Dark Theme Design** - Modern black theme optimized for user experience
-- **Responsive Design** - Works perfectly on desktop, tablet, and mobile devices
-- **SEO Optimized** - Fully optimized for search engines with proper meta tags and structured data
-- **Fast Loading** - Lightweight code with optimized performance
-- **Embedded Downloader** - Seamlessly integrated x-downloader.com functionality
-- **No Software Required** - Browser-based solution, no downloads needed
+- **Fast & Free**: Download Twitter videos instantly without registration
+- **Multiple Formats**: Support for MP4 video and MP3 audio downloads  
+- **Quality Options**: Choose from available video quality options
+- **Modern UI**: Clean, responsive design with dark theme
+- **Cross-Platform**: Works on desktop and mobile devices
+- **No Software Required**: Browser-based tool, no downloads needed
 
-## 🎨 Design Highlights
+## 🌐 Live Demo
 
-- **Black Theme** - Sophisticated dark color scheme
-- **Twitter Blue Accents** - Professional branding with Twitter's signature blue
-- **Modern Typography** - Clean, readable fonts for optimal user experience
-- **Smooth Animations** - Subtle hover effects and transitions
-- **Accessibility Compliant** - WCAG guidelines followed for inclusive design
+Visit the live demo: [Your Vercel Deployment URL]
 
-## 🛠️ Technology Stack
+## 📋 Quick Start
 
-- **HTML5** - Semantic markup with proper structure
-- **CSS3** - Modern styling with Grid and Flexbox layouts
-- **Responsive Design** - Mobile-first approach
-- **SEO Optimization** - Meta tags, Open Graph, Twitter Cards, JSON-LD
-- **Performance Optimized** - Fast loading with minimal dependencies
+1. **Visit the website**
+2. **Paste Twitter video URL** in the input field
+3. **Select format** (MP4 or MP3)
+4. **Click Download** and choose your preferred quality
+5. **Download** starts automatically in a new tab
 
-## 📱 Responsive Breakpoints
+## 🛠 Technical Stack
 
-- **Desktop**: 1200px and above
-- **Tablet**: 768px - 1199px
-- **Mobile**: 320px - 767px
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Backend**: Python with yt-dlp
+- **Deployment**: Vercel Serverless Functions
+- **API**: RESTful API with CORS support
 
-## 🔧 Installation & Setup
+## 🚀 Deployment on Vercel
 
-1. Clone the repository:
-```bash
-git clone https://github.com/davidww11/xvideodownloader.git
-```
-
-2. Navigate to the project directory:
-```bash
-cd xvideodownloader
-```
-
-3. Open `index.html` in your web browser or serve with a local server:
-```bash
-# Using Python 3
-python -m http.server 8000
-
-# Using Node.js (if you have http-server installed)
-npx http-server
-
-# Using PHP
-php -S localhost:8000
-```
-
-4. Visit `http://localhost:8000` in your browser
-
-## 📁 Project Structure
+This project is optimized for Vercel deployment with the following structure:
 
 ```
 xvideodownloader/
-├── index.html          # Main HTML file
-├── styles.css          # CSS stylesheet
-├── README.md           # Project documentation
-└── assets/             # Images and other assets (when added)
-    ├── images/
-    └── icons/
+├── api/                    # Vercel Serverless Functions
+│   ├── download.py        # Main download API endpoint
+│   └── health.py         # Health check endpoint  
+├── static/               # Static frontend files
+│   ├── index.html       # Main webpage
+│   └── styles.css       # Stylesheet
+├── vercel.json          # Vercel configuration (optimized)
+└── requirements.txt     # Python dependencies
 ```
 
-## 🌐 SEO Features
+### Automatic Deployment
 
-- **Structured Data** - JSON-LD markup for rich snippets
-- **Open Graph Tags** - Social media sharing optimization
-- **Twitter Cards** - Enhanced Twitter sharing
-- **Meta Descriptions** - Search engine friendly descriptions
-- **Semantic HTML** - Proper heading hierarchy (H1, H2, H3)
-- **Alt Text** - All images include descriptive alt attributes
-- **Canonical URLs** - Proper URL structure for SEO
+1. **Fork this repository** to your GitHub account
+2. **Connect to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Import your forked repository
+   - Click "Deploy"
 
-## 🎯 Key Sections
+3. **Configuration**: The project includes an optimized `vercel.json` that:
+   - Automatically recognizes Python functions in `/api/` directory
+   - Routes static files correctly
+   - Handles CORS headers
+   - No conflicting builds/functions configuration
 
-1. **Hero Section** - Main title and introduction
-2. **Downloader Tool** - Embedded iframe with x-downloader.com
-3. **Features Grid** - Six key benefits highlighted
-4. **How-to Guide** - Step-by-step download instructions
-5. **FAQ Section** - Common questions answered
-6. **Footer** - Contact information and legal links
+### Manual Deployment
 
-## 🔒 Legal & Compliance
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-- **Copyright Compliance** - Clear disclaimers about video ownership
-- **Terms of Service** - Proper legal framework
-- **Privacy Policy** - User privacy protection
-- **DMCA Compliance** - Copyright infringement reporting
+# Deploy
+vercel --prod
+```
 
-## 🌍 Browser Support
+## 🔧 Local Development
 
-- **Chrome** 90+
-- **Firefox** 88+
-- **Safari** 14+
-- **Edge** 90+
-- **Mobile browsers** - iOS Safari, Chrome Mobile
+```bash
+# Clone the repository
+git clone https://github.com/your-username/xvideodownloader.git
+cd xvideodownloader
 
-## 📊 Performance Metrics
+# Install dependencies
+pip install -r requirements.txt
 
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **Page Load Time**: <2 seconds
-- **First Contentful Paint**: <1.5 seconds
-- **Mobile Friendly**: 100% Google Mobile-Friendly Test
+# Run development server
+PORT=8000 python3 run.py
 
-## 🚀 Deployment
+# Open browser
+open http://localhost:8000
+```
 
-This project can be deployed to any static hosting service:
+## 📚 API Documentation
 
-- **Netlify**: Drag and drop deployment
-- **Vercel**: Git integration available
-- **GitHub Pages**: Built-in GitHub hosting
-- **AWS S3**: Static website hosting
-- **Firebase Hosting**: Google's hosting solution
+### POST /api/download
+
+Extract video information and download URLs.
+
+**Request:**
+```json
+{
+  "url": "https://twitter.com/username/status/123456789",
+  "format": "mp4"
+}
+```
+
+**Response:**
+```json
+{
+  "title": "Video Title",
+  "author": "@username", 
+  "duration": "02:30",
+  "thumbnail": "https://...",
+  "formats": [
+    {
+      "quality": "1080p HD",
+      "url": "https://...",
+      "ext": "mp4",
+      "filesize": "15.2 MB",
+      "filename": "video.mp4"
+    }
+  ]
+}
+```
+
+### GET /api/health
+
+Health check endpoint.
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T00:00:00",
+  "platform": "vercel"
+}
+```
+
+## 🔄 Recent Optimizations for Vercel
+
+- ✅ **Removed conflicting builds/functions configuration**
+- ✅ **Migrated from Flask to BaseHTTPRequestHandler** for better serverless compatibility  
+- ✅ **Simplified dependency management** (removed Flask, Flask-CORS, Werkzeug)
+- ✅ **Added proper CORS headers** in function responses
+- ✅ **Used relative API paths** instead of hardcoded localhost URLs
+- ✅ **Optimized vercel.json** according to Vercel best practices
+
+## 🛡 Legal & Privacy
+
+- **Privacy First**: No data storage, no tracking
+- **Legal Use**: Respect copyright laws and Twitter's terms of service
+- **Open Source**: MIT License - use responsibly
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/your-username/xvideodownloader/issues)
+- **Email**: support@yoursite.com
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
-
-For support and questions:
-- **Email**: 
-- **Response Time**: Within 24 hours
-- **Business Hours**: 24/7 Online Support
-
-## 🔗 Links
-
-- **Live Demo**: [pullvideo](https://pullvideo.com)
-- **Documentation**: [README.md](README.md)
-- **Issues**: [GitHub Issues](https://github.com/davidww11/xvideodownloader/issues)
-
 ---
 
-**Built with ❤️ for the global community of content creators and social media enthusiasts.** 
+**Disclaimer**: This tool is for downloading videos you own or have permission to download. Please respect copyright laws and platform terms of service. 
