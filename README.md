@@ -138,7 +138,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support and questions:
-- **Email**: support@twittervideodownloader.com
+- **Email**: 
 - **Response Time**: Within 24 hours
 - **Business Hours**: 24/7 Online Support
 
