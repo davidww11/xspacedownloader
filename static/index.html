@@ -469,22 +469,79 @@
             }
         }
 
-        // Global download function
+        // Global download function with improved UX
         window.downloadFile = function(url, filename) {
-            // Try to download in a new window/tab first
-            const newWindow = window.open(url, '_blank');
-            
-            // If popup is blocked or fails, fallback to direct download
-            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                // Fallback: create a download link
+            try {
+                // Show download started message
+                const downloadMsg = document.createElement('div');
+                downloadMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #1d9bf0;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                `;
+                downloadMsg.textContent = `🔄 正在下载: ${filename || 'video.mp4'}`;
+                document.body.appendChild(downloadMsg);
+                
+                // Create download link
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename;
-                a.target = '_blank';
+                a.download = filename || 'video.mp4';
                 a.style.display = 'none';
+                
+                // Add to DOM and trigger download
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                
+                // Update message after a short delay
+                setTimeout(() => {
+                    downloadMsg.style.background = '#51cf66';
+                    downloadMsg.textContent = `✅ 下载已开始: ${filename || 'video.mp4'}`;
+                    
+                    // Remove message after 3 seconds
+                    setTimeout(() => {
+                        if (document.body.contains(downloadMsg)) {
+                            document.body.removeChild(downloadMsg);
+                        }
+                    }, 3000);
+                }, 500);
+                
+                console.log(`Download initiated: ${filename || 'video.mp4'}`);
+                
+            } catch (error) {
+                console.error('Download failed:', error);
+                
+                // Show error message
+                const errorMsg = document.createElement('div');
+                errorMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #ff6b6b;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                `;
+                errorMsg.textContent = `❌ 下载失败: ${error.message}`;
+                document.body.appendChild(errorMsg);
+                
+                setTimeout(() => {
+                    if (document.body.contains(errorMsg)) {
+                        document.body.removeChild(errorMsg);
+                    }
+                }, 5000);
             }
         };
 
