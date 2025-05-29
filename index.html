@@ -27,6 +27,7 @@
     <link rel="canonical" href="https://www.pullvideo.com">
     
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="static/images/logo.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
@@ -55,7 +56,8 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <h1>Twitter Video Downloader</h1>
+                <img src="static/images/logo.svg" alt="Twitter Video Downloader Logo" class="site-logo" style="height:32px;width:32px;vertical-align:middle;margin-right:10px;">
+                <h1 style="display:inline-block;vertical-align:middle;margin:0;">Twitter Video Downloader</h1>
                 <p class="tagline">Download Twitter Videos Free & Fast</p>
             </div>
             <nav class="nav" role="navigation" aria-label="Main navigation">
@@ -96,13 +98,7 @@
                                        placeholder="Paste Twitter video URL here (e.g., https://twitter.com/username/status/123456789)" 
                                        class="url-input"
                                        aria-label="Twitter video URL">
-                                <div class="format-selector">
-                                    <label for="format">Format:</label>
-                                    <select id="format" class="format-select">
-                                        <option value="mp4">MP4 (Video)</option>
-                                        <option value="mp3">MP3 (Audio)</option>
-                                    </select>
-                                </div>
+                                <button id="pasteBtn" class="paste-btn" type="button" title="Paste from clipboard" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:0.5rem 1rem;font-size:1rem;background:#1d9bf0;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:2;">📋 粘贴</button>
                             </div>
                             <button id="downloadBtn" class="download-btn" type="button">
                                 <span class="btn-text">Download Video</span>
@@ -309,13 +305,13 @@
 
             initializeElements() {
                 this.urlInput = document.getElementById('twitterUrl');
-                this.formatSelect = document.getElementById('format');
                 this.downloadBtn = document.getElementById('downloadBtn');
                 this.btnText = this.downloadBtn.querySelector('.btn-text');
                 this.btnLoading = this.downloadBtn.querySelector('.btn-loading');
                 this.resultSection = document.getElementById('result-section');
                 this.errorSection = document.getElementById('error-section');
                 this.retryBtn = document.getElementById('retryBtn');
+                this.pasteBtn = document.getElementById('pasteBtn');
             }
 
             bindEvents() {
@@ -325,6 +321,21 @@
                     if (e.key === 'Enter') this.handleDownload();
                 });
                 this.urlInput.addEventListener('input', () => this.validateUrl());
+                this.pasteBtn.addEventListener('click', async () => {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        try {
+                            const text = await navigator.clipboard.readText();
+                            if (text) {
+                                this.urlInput.value = text;
+                                this.validateUrl();
+                            }
+                        } catch (err) {
+                            alert('无法读取剪贴板内容，请手动粘贴');
+                        }
+                    } else {
+                        alert('当前浏览器不支持一键粘贴，请手动粘贴');
+                    }
+                });
             }
 
             validateUrl() {
@@ -349,7 +360,6 @@
                 }
 
                 const url = this.urlInput.value.trim();
-                const format = this.formatSelect.value;
 
                 this.setLoading(true);
                 this.hideError();
@@ -361,7 +371,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ url, format })
+                        body: JSON.stringify({ url })
                     });
 
                     const data = await response.json();

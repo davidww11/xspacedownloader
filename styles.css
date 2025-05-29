@@ -147,15 +147,12 @@ body {
     background-color: #111111;
 }
 
-.input-section {
-    margin-bottom: 2rem;
-}
-
 .input-wrapper {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    position: relative;
 }
 
 .url-input {
@@ -768,4 +765,33 @@ button:focus {
         font-size: 1rem;
         padding: 0.875rem 1.5rem;
     }
+}
+
+.site-logo {
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+    margin-right: 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(29,161,242,0.08);
+    background: #fff0;
+}
+
+.paste-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: #1d9bf0;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.2s;
+}
+.paste-btn:hover {
+    background: #1a8cd8;
 } 
