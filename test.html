@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Video Downloader - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a2a;
+        }
+        button {
+            background: #1d9bf0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #333;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 5px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Twitter Video Downloader - API Test</h1>
+    
+    <div class="test-section">
+        <h2>🧪 API Test</h2>
+        <input type="text" id="testUrl" placeholder="Enter Twitter URL here" value="https://twitter.com/example/status/123456789">
+        <button onclick="testAPI()">Test API</button>
+        <div id="apiResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔗 Health Check</h2>
+        <button onclick="healthCheck()">Check API Health</button>
+        <div id="healthResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📋 Sample URLs for Testing</h2>
+        <p>You can use these sample Twitter URLs for testing:</p>
+        <ul>
+            <li><code>https://twitter.com/NASA/status/1234567890</code></li>
+            <li><code>https://x.com/elonmusk/status/1234567890</code></li>
+            <li><code>https://twitter.com/SpaceX/status/1234567890</code></li>
+        </ul>
+        <p><em>Note: Replace with actual video URLs for real testing</em></p>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const url = document.getElementById('testUrl').value;
+            const resultDiv = document.getElementById('apiResult');
+            
+            if (!url) {
+                resultDiv.textContent = 'Please enter a URL';
+                return;
+            }
+            
+            resultDiv.textContent = 'Testing API...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url, format: 'mp4' })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = `Status: ${response.status}\n\nResponse:\n${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        async function healthCheck() {
+            const resultDiv = document.getElementById('healthResult');
+            resultDiv.textContent = 'Checking health...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/health');
+                const data = await response.json();
+                resultDiv.textContent = `Status: ${response.status}\n\nResponse:\n${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Auto health check on load
+        window.addEventListener('load', healthCheck);
+    </script>
+</body>
+</html> 

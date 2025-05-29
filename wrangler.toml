@@ -1,0 +1,13 @@
+name = "twitter-video-downloader"
+main = "worker.js"
+compatibility_date = "2023-12-01"
+
+[env.production]
+route = { pattern = "your-domain.com/api/*", zone_name = "your-domain.com" }
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-namespace-id"
+
+[build]
+command = "npm run build" 
