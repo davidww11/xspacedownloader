@@ -469,8 +469,10 @@
             }
         }
 
-        // Global download function with improved UX
+        // Enhanced download function with multiple fallback methods
         window.downloadFile = function(url, filename) {
+            console.log('Download initiated for:', url, 'filename:', filename);
+            
             try {
                 // Show download started message
                 const downloadMsg = document.createElement('div');
@@ -490,31 +492,70 @@
                 downloadMsg.textContent = `🔄 正在下载: ${filename || 'video.mp4'}`;
                 document.body.appendChild(downloadMsg);
                 
-                // Create download link
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename || 'video.mp4';
-                a.style.display = 'none';
-                
-                // Add to DOM and trigger download
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                
-                // Update message after a short delay
-                setTimeout(() => {
-                    downloadMsg.style.background = '#51cf66';
-                    downloadMsg.textContent = `✅ 下载已开始: ${filename || 'video.mp4'}`;
-                    
-                    // Remove message after 3 seconds
-                    setTimeout(() => {
-                        if (document.body.contains(downloadMsg)) {
-                            document.body.removeChild(downloadMsg);
+                // Method 1: Try fetch and blob download
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
                         }
-                    }, 3000);
-                }, 500);
-                
-                console.log(`Download initiated: ${filename || 'video.mp4'}`);
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        // Create blob URL and download
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = filename || 'video.mp4';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        // Clean up blob URL
+                        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
+                        
+                        // Update message
+                        downloadMsg.style.background = '#51cf66';
+                        downloadMsg.textContent = `✅ 下载成功: ${filename || 'video.mp4'}`;
+                        
+                        setTimeout(() => {
+                            if (document.body.contains(downloadMsg)) {
+                                document.body.removeChild(downloadMsg);
+                            }
+                        }, 3000);
+                        
+                        console.log('Download completed via fetch method');
+                    })
+                    .catch(error => {
+                        console.warn('Fetch download failed, trying direct method:', error);
+                        
+                        // Method 2: Direct download link (fallback)
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename || 'video.mp4';
+                        a.style.display = 'none';
+                        a.setAttribute('target', '_self');
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        // Update message
+                        downloadMsg.style.background = '#f39c12';
+                        downloadMsg.textContent = `⚠️ 正在尝试下载: ${filename || 'video.mp4'}`;
+                        
+                        setTimeout(() => {
+                            downloadMsg.style.background = '#51cf66';
+                            downloadMsg.textContent = `✅ 下载已启动: ${filename || 'video.mp4'}`;
+                            
+                            setTimeout(() => {
+                                if (document.body.contains(downloadMsg)) {
+                                    document.body.removeChild(downloadMsg);
+                                }
+                            }, 3000);
+                        }, 1000);
+                        
+                        console.log('Download attempted via direct method');
+                    });
                 
             } catch (error) {
                 console.error('Download failed:', error);
@@ -542,6 +583,14 @@
                         document.body.removeChild(errorMsg);
                     }
                 }, 5000);
+                
+                // Last resort: try to open in new tab with download hint
+                console.log('Trying last resort method...');
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename || 'video.mp4';
+                link.target = '_blank';
+                link.click();
             }
         };
 

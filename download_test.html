@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #1d9bf0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #1a8cd8;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 下载功能测试页面</h1>
+    
+    <div class="test-section">
+        <h2>测试不同的下载方法</h2>
+        <button onclick="testDirectDownload()">测试直接下载链接</button>
+        <button onclick="testBlobDownload()">测试 Blob 下载</button>
+        <button onclick="testAPIDownload()">测试 API 下载</button>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>实时日志</h2>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        // Log function
+        function log(message) {
+            const logEl = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logEl.textContent += `[${timestamp}] ${message}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            document.getElementById('log').textContent = '';
+        }
+
+        // Test 1: Direct download link
+        function testDirectDownload() {
+            log('测试直接下载链接...');
+            const a = document.createElement('a');
+            a.href = 'data:text/plain;charset=utf-8,Hello%20World%21';
+            a.download = 'test-direct.txt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            log('✅ 直接下载触发完成');
+        }
+
+        // Test 2: Blob download
+        function testBlobDownload() {
+            log('测试 Blob 下载...');
+            const content = 'This is a test file created via Blob download method.';
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test-blob.txt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            setTimeout(() => window.URL.revokeObjectURL(url), 100);
+            log('✅ Blob 下载触发完成');
+        }
+
+        // Test 3: API download simulation
+        function testAPIDownload() {
+            log('测试 API 下载...');
+            const testUrl = 'https://x.com/0xluffy_eth/status/1927557957694185879';
+            
+            fetch('/api/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: testUrl, format: 'mp4' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                log('✅ API 响应成功');
+                log(`视频标题: ${data.title}`);
+                log(`可用格式数量: ${data.formats ? data.formats.length : 0}`);
+                
+                if (data.formats && data.formats.length > 0) {
+                    const format = data.formats[0];
+                    log(`尝试下载第一个格式: ${format.quality}`);
+                    log(`下载 URL: ${format.url.substring(0, 50)}...`);
+                    
+                    // 使用增强的下载函数
+                    downloadFile(format.url, format.filename);
+                }
+            })
+            .catch(error => {
+                log(`❌ API 测试失败: ${error.message}`);
+            });
+        }
+
+        // Enhanced download function (same as in main page)
+        window.downloadFile = function(url, filename) {
+            log(`开始下载: ${filename}`);
+            log(`URL: ${url.substring(0, 50)}...`);
+            
+            try {
+                // Method 1: Try fetch and blob download
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        log('✅ Fetch 请求成功，正在创建 Blob...');
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        log(`✅ Blob 创建成功，大小: ${blob.size} bytes`);
+                        
+                        // Create blob URL and download
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = filename || 'video.mp4';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        // Clean up blob URL
+                        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
+                        
+                        log('✅ 下载通过 Fetch + Blob 方法成功触发');
+                    })
+                    .catch(error => {
+                        log(`⚠️ Fetch 方法失败: ${error.message}`);
+                        log('🔄 尝试直接下载方法...');
+                        
+                        // Method 2: Direct download link (fallback)
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename || 'video.mp4';
+                        a.style.display = 'none';
+                        a.setAttribute('target', '_self');
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        log('✅ 直接下载方法已触发');
+                    });
+                
+            } catch (error) {
+                log(`❌ 下载完全失败: ${error.message}`);
+                
+                // Last resort: try to open in new tab with download hint
+                log('🆘 尝试最后的备用方法...');
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename || 'video.mp4';
+                link.target = '_blank';
+                link.click();
+                log('✅ 备用方法已触发（新标签页）');
+            }
+        };
+
+        // Initial log
+        log('下载功能测试页面已加载');
+        log('点击上方按钮开始测试各种下载方法');
+    </script>
+</body>
+</html> 
