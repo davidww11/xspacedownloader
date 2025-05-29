@@ -507,109 +507,153 @@
                     downloadMsg.textContent = `📱 移动端下载准备中...`;
                     downloadMsg.style.background = '#f39c12';
                     
-                    // Force download for mobile by creating a special download link
-                    const createMobileDownloadLink = (downloadUrl, fileName) => {
+                    // Create mobile download interface without direct links
+                    const createMobileDownloadInterface = (downloadUrl, fileName) => {
                         // Update message
                         downloadMsg.style.background = '#ff6b6b';
                         downloadMsg.innerHTML = `
                             <div>📱 移动端下载说明</div>
                             <div style="font-size: 12px; margin-top: 8px;">
-                                自动下载可能不支持，请：<br>
-                                1. 点击下方链接<br>
-                                2. 长按视频选择"下载"<br>
-                                3. 或复制链接到下载器
+                                请按照下方步骤下载视频
                             </div>
                         `;
                         
-                        // Create a prominent download link
-                        const linkContainer = document.createElement('div');
-                        linkContainer.style.cssText = `
+                        // Create a comprehensive mobile download interface
+                        const interfaceContainer = document.createElement('div');
+                        interfaceContainer.style.cssText = `
                             position: fixed;
                             top: 80px;
                             left: 20px;
                             right: 20px;
-                            background: #2a2a2a;
+                            bottom: 20px;
+                            background: #1a1a1a;
                             color: white;
                             padding: 20px;
                             border-radius: 12px;
                             z-index: 10001;
                             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
                             font-family: Arial, sans-serif;
+                            overflow-y: auto;
                         `;
                         
-                        linkContainer.innerHTML = `
-                            <div style="text-align: center; margin-bottom: 15px;">
-                                <h3 style="margin: 0; color: #1d9bf0;">📱 移动端下载</h3>
+                        interfaceContainer.innerHTML = `
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <h3 style="margin: 0; color: #1d9bf0;">📱 移动端视频下载</h3>
                                 <p style="margin: 10px 0; font-size: 14px; color: #ccc;">
                                     ${fileName || 'video.mp4'}
                                 </p>
                             </div>
                             
-                            <div style="margin-bottom: 15px;">
-                                <a href="${downloadUrl}" 
-                                   download="${fileName || 'video.mp4'}"
-                                   style="
-                                       display: block;
-                                       background: #1d9bf0;
-                                       color: white;
-                                       text-decoration: none;
-                                       padding: 15px;
-                                       border-radius: 8px;
-                                       text-align: center;
-                                       font-size: 16px;
-                                       margin-bottom: 10px;
-                                   ">
-                                    🔽 点击下载视频
-                                </a>
-                                
-                                <button onclick="window.open('${downloadUrl}', '_blank')" 
+                            <div style="background: #2a2a2a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <h4 style="margin: 0 0 10px 0; color: #1d9bf0;">📋 第一步：复制下载链接</h4>
+                                <div style="background: #333; padding: 10px; border-radius: 6px; margin-bottom: 10px; word-break: break-all; font-size: 12px; color: #ccc;">
+                                    ${downloadUrl}
+                                </div>
+                                <button onclick="navigator.clipboard.writeText('${downloadUrl}').then(() => {
+                                    this.textContent = '✅ 已复制！';
+                                    this.style.background = '#51cf66';
+                                    setTimeout(() => {
+                                        this.textContent = '📋 复制链接';
+                                        this.style.background = '#1d9bf0';
+                                    }, 2000);
+                                }).catch(() => {
+                                    alert('复制失败，请手动复制上方链接');
+                                })" 
                                         style="
                                             width: 100%;
-                                            background: #51cf66;
+                                            background: #1d9bf0;
                                             color: white;
                                             border: none;
                                             padding: 12px;
                                             border-radius: 6px;
                                             font-size: 14px;
-                                            margin-bottom: 10px;
                                         ">
-                                    📺 在新窗口打开
+                                    📋 复制链接
                                 </button>
+                            </div>
+                            
+                            <div style="background: #2a2a2a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <h4 style="margin: 0 0 10px 0; color: #51cf66;">🎯 第二步：选择下载方式</h4>
+                                <div style="margin-bottom: 15px;">
+                                    <h5 style="margin: 0 0 5px 0; color: #ffd43b;">方式1：浏览器下载</h5>
+                                    <button onclick="window.open('${downloadUrl}', '_blank')" 
+                                            style="
+                                                width: 100%;
+                                                background: #51cf66;
+                                                color: white;
+                                                border: none;
+                                                padding: 10px;
+                                                border-radius: 6px;
+                                                font-size: 13px;
+                                                margin-bottom: 5px;
+                                            ">
+                                        🌐 在新标签页打开
+                                    </button>
+                                    <p style="margin: 0; font-size: 11px; color: #999;">
+                                        打开后，长按视频选择"保存视频"
+                                    </p>
+                                </div>
                                 
-                                <div style="font-size: 12px; color: #999; text-align: center;">
-                                    💡 如果无法下载，请长按视频选择"保存视频"
+                                <div style="margin-bottom: 15px;">
+                                    <h5 style="margin: 0 0 5px 0; color: #ffd43b;">方式2：下载器应用</h5>
+                                    <div style="font-size: 12px; color: #ccc; line-height: 1.4;">
+                                        推荐使用：<br>
+                                        • ADM下载器 (Android Download Manager)<br>
+                                        • 1DM浏览器和下载器<br>
+                                        • Turbo Download Manager<br>
+                                        <br>
+                                        <strong>使用方法：</strong><br>
+                                        1. 点击上方"📋 复制链接"<br>
+                                        2. 打开下载器应用<br>
+                                        3. 粘贴链接开始下载
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div style="text-align: center;">
-                                <button onclick="this.parentElement.parentElement.remove()" 
+                            <div style="background: #2a2a2a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <h4 style="margin: 0 0 10px 0; color: #ff6b6b;">💡 不同浏览器操作提示</h4>
+                                <div style="font-size: 12px; color: #ccc; line-height: 1.4;">
+                                    <strong>Chrome：</strong> 长按视频 → 选择"下载视频"<br>
+                                    <strong>Firefox：</strong> 长按视频 → 选择"保存视频"<br>
+                                    <strong>Safari：</strong> 长按视频 → 选择"存储到文件"<br>
+                                    <strong>Samsung Internet：</strong> 长按视频 → 选择"下载"<br>
+                                    <br>
+                                    <strong>如果没有下载选项：</strong><br>
+                                    • 尝试更换浏览器<br>
+                                    • 检查浏览器下载设置<br>
+                                    • 使用专门的下载器应用
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 20px;">
+                                <button onclick="this.parentElement.parentElement.remove(); document.body.removeChild(document.querySelector('[style*=\"正在准备下载\"], [style*=\"移动端下载说明\"]') || document.createElement('div'))" 
                                         style="
                                             background: #6c757d;
                                             color: white;
                                             border: none;
-                                            padding: 8px 16px;
-                                            border-radius: 4px;
-                                            font-size: 12px;
+                                            padding: 12px 24px;
+                                            border-radius: 6px;
+                                            font-size: 14px;
                                         ">
                                     关闭
                                 </button>
                             </div>
                         `;
                         
-                        document.body.appendChild(linkContainer);
+                        document.body.appendChild(interfaceContainer);
                         
-                        // Auto-remove after 30 seconds
+                        // Auto-remove after 2 minutes
                         setTimeout(() => {
-                            if (document.body.contains(linkContainer)) {
-                                document.body.removeChild(linkContainer);
+                            if (document.body.contains(interfaceContainer)) {
+                                document.body.removeChild(interfaceContainer);
                             }
-                        }, 30000);
+                        }, 120000);
                         
-                        console.log('Mobile download link created');
+                        console.log('Mobile download interface created');
                     };
                     
-                    // For mobile, we'll show the download interface immediately
-                    createMobileDownloadLink(url, filename);
+                    // Show the comprehensive download interface
+                    createMobileDownloadInterface(url, filename);
                     
                 } else {
                     // Desktop download logic (existing fetch + blob method)
