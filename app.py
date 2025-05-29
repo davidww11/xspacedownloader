@@ -86,17 +86,34 @@ class TwitterVideoDownloader:
                 # Extract available formats
                 formats = []
                 if 'formats' in video_info and video_info['formats']:
+                    # 使用字典来存储每个分辨率的最佳格式
+                    quality_formats = {}
                     for fmt in video_info['formats']:
                         if fmt.get('vcodec') != 'none':  # Only video formats
                             quality = self.get_quality_label(fmt)
-                            formats.append({
-                                'format_id': fmt.get('format_id', ''),
-                                'url': fmt.get('url', ''),
-                                'ext': fmt.get('ext', 'mp4'),
-                                'quality': quality,
-                                'filesize': self.format_filesize(fmt.get('filesize')),
-                                'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{fmt.get('ext', 'mp4')}"
-                            })
+                            # 获取当前格式的文件大小，确保为数字
+                            try:
+                                current_size = int(fmt.get('filesize') or 0)
+                            except Exception:
+                                current_size = 0
+                            try:
+                                prev_size = int(quality_formats[quality].get('raw_filesize', 0)) if quality in quality_formats else 0
+                            except Exception:
+                                prev_size = 0
+                            # 如果这个分辨率还没有记录，或者当前格式的文件大小更大（质量更好），则更新
+                            if quality not in quality_formats or current_size > prev_size:
+                                quality_formats[quality] = {
+                                    'format_id': fmt.get('format_id', ''),
+                                    'url': fmt.get('url', ''),
+                                    'ext': fmt.get('ext', 'mp4'),
+                                    'quality': quality,
+                                    'filesize': self.format_filesize(fmt.get('filesize')),
+                                    'raw_filesize': current_size,
+                                    'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{fmt.get('ext', 'mp4')}"
+                                }
+                    
+                    # 将去重后的格式添加到列表中（去掉raw_filesize字段）
+                    formats = [{k: v for k, v in f.items() if k != 'raw_filesize'} for f in quality_formats.values()]
                 
                 # If no formats found, try the direct URL
                 if not formats and video_info.get('url'):
