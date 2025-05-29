@@ -47,10 +47,16 @@
     <h1>🔧 下载功能测试页面</h1>
     
     <div class="test-section">
+        <h2>设备信息</h2>
+        <div id="deviceInfo" class="log" style="max-height: 150px;"></div>
+    </div>
+    
+    <div class="test-section">
         <h2>测试不同的下载方法</h2>
         <button onclick="testDirectDownload()">测试直接下载链接</button>
         <button onclick="testBlobDownload()">测试 Blob 下载</button>
         <button onclick="testAPIDownload()">测试 API 下载</button>
+        <button onclick="testMobileDownload()">测试移动端下载</button>
         <button onclick="clearLog()">清空日志</button>
     </div>
     
@@ -71,6 +77,25 @@
 
         function clearLog() {
             document.getElementById('log').textContent = '';
+        }
+
+        // Device detection and info display
+        function displayDeviceInfo() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            const deviceInfoEl = document.getElementById('deviceInfo');
+            deviceInfoEl.textContent = `
+设备类型: ${isMobile ? '移动设备' : '桌面设备'}
+用户代理: ${navigator.userAgent}
+是否 Android: ${isAndroid ? '是' : '否'}
+是否 iOS: ${isIOS ? '是' : '否'}
+屏幕尺寸: ${window.screen.width} x ${window.screen.height}
+视口尺寸: ${window.innerWidth} x ${window.innerHeight}
+支持 Blob: ${window.Blob ? '是' : '否'}
+支持 URL.createObjectURL: ${window.URL && window.URL.createObjectURL ? '是' : '否'}
+            `;
         }
 
         // Test 1: Direct download link
@@ -201,9 +226,77 @@
             }
         };
 
+        // Test 4: Mobile-specific download
+        function testMobileDownload() {
+            log('测试移动端下载方法...');
+            const testUrl = 'https://x.com/0xluffy_eth/status/1927557957694185879';
+            
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            
+            if (!isMobile) {
+                log('⚠️ 当前不是移动设备，将模拟移动端下载行为');
+            }
+            
+            fetch('/api/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: testUrl, format: 'mp4' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                log('✅ API 响应成功');
+                if (data.formats && data.formats.length > 0) {
+                    const format = data.formats[0];
+                    const downloadUrl = format.url;
+                    
+                    log(`开始测试移动端下载方法...`);
+                    log(`URL: ${downloadUrl.substring(0, 50)}...`);
+                    
+                    // 模拟移动端下载逻辑
+                    try {
+                        if (isAndroid || !isMobile) {
+                            log('使用 window.location.href 方法 (Android)');
+                            // 创建一个临时链接进行测试，而不是直接跳转
+                            const testLink = document.createElement('a');
+                            testLink.href = downloadUrl;
+                            testLink.textContent = '点击测试移动端下载';
+                            testLink.style.display = 'block';
+                            testLink.style.color = '#1d9bf0';
+                            testLink.style.marginTop = '10px';
+                            testLink.style.textDecoration = 'underline';
+                            testLink.onclick = function(e) {
+                                e.preventDefault();
+                                window.location.href = downloadUrl;
+                                log('✅ 移动端下载已触发 (window.location.href)');
+                            };
+                            
+                            const deviceInfoEl = document.getElementById('deviceInfo');
+                            deviceInfoEl.appendChild(testLink);
+                            
+                        } else {
+                            log('使用 window.open 方法 (iOS)');
+                            window.open(downloadUrl, '_blank');
+                            log('✅ 移动端下载已触发 (window.open)');
+                        }
+                    } catch (error) {
+                        log(`❌ 移动端下载失败: ${error.message}`);
+                    }
+                }
+            })
+            .catch(error => {
+                log(`❌ API 测试失败: ${error.message}`);
+            });
+        }
+
         // Initial log
         log('下载功能测试页面已加载');
         log('点击上方按钮开始测试各种下载方法');
+        
+        // Display device info on load
+        displayDeviceInfo();
     </script>
 </body>
 </html> 
