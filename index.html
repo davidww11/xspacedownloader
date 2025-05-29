@@ -373,7 +373,20 @@
                     this.showResult(data);
                 } catch (error) {
                     console.error('Download error:', error);
-                    this.showError(error.message || 'Failed to download video. Please try again.');
+                    
+                    // Provide more detailed error information
+                    let errorMessage = 'Failed to download video. Please try again.';
+                    
+                    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                        errorMessage = '❌ Network connection failed. Please check:\n' +
+                                     '• Is the server running on port 8000?\n' +
+                                     '• Try accessing http://localhost:8000/debug for diagnostics\n' +
+                                     '• Check browser console for more details';
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    
+                    this.showError(errorMessage);
                 } finally {
                     this.setLoading(false);
                 }

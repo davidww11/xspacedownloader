@@ -190,6 +190,11 @@ def test_page():
     """Serve the test page"""
     return app.send_static_file('test.html')
 
+@app.route('/debug')
+def debug_page():
+    """Serve the debug page"""
+    return app.send_static_file('debug.html')
+
 @app.route('/api/download', methods=['POST'])
 def download_video():
     """API endpoint to process video download requests"""

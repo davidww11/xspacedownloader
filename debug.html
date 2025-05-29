@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px; background: #1d9bf0; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { background: #333; padding: 15px; border-radius: 5px; margin: 10px 0; white-space: pre-wrap; }
+        .error { color: #ff6b6b; }
+        .success { color: #51cf66; }
+        input { padding: 10px; width: 100%; margin: 10px 0; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Debug Test</h1>
+        
+        <div>
+            <h2>Test 1: Health Check</h2>
+            <button onclick="testHealth()">Test Health API</button>
+            <div id="healthResult" class="result"></div>
+        </div>
+        
+        <div>
+            <h2>Test 2: Download API</h2>
+            <input type="text" id="testUrl" placeholder="Enter Twitter URL" value="https://x.com/0xluffy_eth/status/1927557957694185879">
+            <button onclick="testDownload()">Test Download API</button>
+            <div id="downloadResult" class="result"></div>
+        </div>
+        
+        <div>
+            <h2>Test 3: Network Information</h2>
+            <button onclick="showNetworkInfo()">Show Network Info</button>
+            <div id="networkResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = isError ? 'result error' : 'result success';
+        }
+
+        async function testHealth() {
+            try {
+                log('healthResult', 'Testing health endpoint...');
+                
+                const response = await fetch('/api/health', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('healthResult', `✅ Health check successful!\nStatus: ${data.status}\nTimestamp: ${data.timestamp}`);
+                } else {
+                    log('healthResult', `❌ Health check failed!\nStatus: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`, true);
+                }
+            } catch (error) {
+                log('healthResult', `❌ Network error: ${error.message}`, true);
+            }
+        }
+
+        async function testDownload() {
+            try {
+                const url = document.getElementById('testUrl').value.trim();
+                if (!url) {
+                    log('downloadResult', '❌ Please enter a URL', true);
+                    return;
+                }
+                
+                log('downloadResult', 'Testing download endpoint...');
+                
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url, format: 'mp4' })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('downloadResult', `✅ Download API successful!\nTitle: ${data.title}\nAuthor: ${data.author}\nFormats: ${data.formats.length}`);
+                } else {
+                    log('downloadResult', `❌ Download API failed!\nStatus: ${response.status}\nError: ${data.error || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                log('downloadResult', `❌ Network error: ${error.message}`, true);
+            }
+        }
+
+        function showNetworkInfo() {
+            const info = {
+                'Current URL': window.location.href,
+                'Protocol': window.location.protocol,
+                'Host': window.location.host,
+                'Port': window.location.port || 'default',
+                'User Agent': navigator.userAgent,
+                'API Base URL': '/api',
+                'Expected Health URL': `${window.location.origin}/api/health`,
+                'Expected Download URL': `${window.location.origin}/api/download`
+            };
+            
+            const infoText = Object.entries(info)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join('\n');
+            
+            log('networkResult', `🔍 Network Information:\n${infoText}`);
+        }
+
+        // Auto-run network info on page load
+        window.addEventListener('load', showNetworkInfo);
+    </script>
+</body>
+</html> 
