@@ -517,62 +517,112 @@
                 if (isMobile) {
                     console.log('Using mobile download method');
                     
-                    // For mobile devices, use direct link approach
-                    downloadMsg.textContent = `📱 移动端下载: ${filename || 'video.mp4'}`;
+                    downloadMsg.textContent = `📱 移动端下载准备中...`;
                     downloadMsg.style.background = '#f39c12';
                     
-                    // Method 1: Try direct navigation for mobile
-                    const mobileDownload = () => {
-                        try {
-                            // Create a temporary form for mobile download
-                            const form = document.createElement('form');
-                            form.method = 'GET';
-                            form.action = url;
-                            form.style.display = 'none';
-                            document.body.appendChild(form);
+                    // Force download for mobile by creating a special download link
+                    const createMobileDownloadLink = (downloadUrl, fileName) => {
+                        // Update message
+                        downloadMsg.style.background = '#ff6b6b';
+                        downloadMsg.innerHTML = `
+                            <div>📱 移动端下载说明</div>
+                            <div style="font-size: 12px; margin-top: 8px;">
+                                自动下载可能不支持，请：<br>
+                                1. 点击下方链接<br>
+                                2. 长按视频选择"下载"<br>
+                                3. 或复制链接到下载器
+                            </div>
+                        `;
+                        
+                        // Create a prominent download link
+                        const linkContainer = document.createElement('div');
+                        linkContainer.style.cssText = `
+                            position: fixed;
+                            top: 80px;
+                            left: 20px;
+                            right: 20px;
+                            background: #2a2a2a;
+                            color: white;
+                            padding: 20px;
+                            border-radius: 12px;
+                            z-index: 10001;
+                            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+                            font-family: Arial, sans-serif;
+                        `;
+                        
+                        linkContainer.innerHTML = `
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <h3 style="margin: 0; color: #1d9bf0;">📱 移动端下载</h3>
+                                <p style="margin: 10px 0; font-size: 14px; color: #ccc;">
+                                    ${fileName || 'video.mp4'}
+                                </p>
+                            </div>
                             
-                            // For Android, try window.location first
-                            if (isAndroid) {
-                                window.location.href = url;
-                            } else {
-                                // For iOS, use window.open with _blank
-                                window.open(url, '_blank');
-                            }
-                            
-                            document.body.removeChild(form);
-                            
-                            downloadMsg.style.background = '#51cf66';
-                            downloadMsg.textContent = `✅ 下载已启动: ${filename || 'video.mp4'}`;
-                            
-                        } catch (error) {
-                            console.error('Mobile download failed:', error);
-                            downloadMsg.style.background = '#ff6b6b';
-                            downloadMsg.textContent = `❌ 下载失败，请长按链接保存`;
-                            
-                            // Fallback: show a link for manual download
-                            setTimeout(() => {
-                                const linkMsg = document.createElement('div');
-                                linkMsg.style.cssText = downloadMsg.style.cssText;
-                                linkMsg.style.background = '#6c757d';
-                                linkMsg.innerHTML = `
-                                    <div>手动下载：</div>
-                                    <a href="${url}" target="_blank" style="color: white; text-decoration: underline;">
-                                        点击此链接下载
-                                    </a>
-                                `;
-                                document.body.appendChild(linkMsg);
+                            <div style="margin-bottom: 15px;">
+                                <a href="${downloadUrl}" 
+                                   download="${fileName || 'video.mp4'}"
+                                   style="
+                                       display: block;
+                                       background: #1d9bf0;
+                                       color: white;
+                                       text-decoration: none;
+                                       padding: 15px;
+                                       border-radius: 8px;
+                                       text-align: center;
+                                       font-size: 16px;
+                                       margin-bottom: 10px;
+                                   ">
+                                    🔽 点击下载视频
+                                </a>
                                 
-                                setTimeout(() => {
-                                    if (document.body.contains(linkMsg)) {
-                                        document.body.removeChild(linkMsg);
-                                    }
-                                }, 10000);
-                            }, 2000);
-                        }
+                                <button onclick="window.open('${downloadUrl}', '_blank')" 
+                                        style="
+                                            width: 100%;
+                                            background: #51cf66;
+                                            color: white;
+                                            border: none;
+                                            padding: 12px;
+                                            border-radius: 6px;
+                                            font-size: 14px;
+                                            margin-bottom: 10px;
+                                        ">
+                                    📺 在新窗口打开
+                                </button>
+                                
+                                <div style="font-size: 12px; color: #999; text-align: center;">
+                                    💡 如果无法下载，请长按视频选择"保存视频"
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <button onclick="this.parentElement.parentElement.remove()" 
+                                        style="
+                                            background: #6c757d;
+                                            color: white;
+                                            border: none;
+                                            padding: 8px 16px;
+                                            border-radius: 4px;
+                                            font-size: 12px;
+                                        ">
+                                    关闭
+                                </button>
+                            </div>
+                        `;
+                        
+                        document.body.appendChild(linkContainer);
+                        
+                        // Auto-remove after 30 seconds
+                        setTimeout(() => {
+                            if (document.body.contains(linkContainer)) {
+                                document.body.removeChild(linkContainer);
+                            }
+                        }, 30000);
+                        
+                        console.log('Mobile download link created');
                     };
                     
-                    // Execute mobile download
-                    mobileDownload();
+                    // For mobile, we'll show the download interface immediately
+                    createMobileDownloadLink(url, filename);
                     
                 } else {
                     // Desktop download logic (existing fetch + blob method)
@@ -632,12 +682,12 @@
                         });
                 }
                 
-                // Auto-remove notification after 5 seconds
+                // Auto-remove notification after 8 seconds for mobile
                 setTimeout(() => {
                     if (document.body.contains(downloadMsg)) {
                         document.body.removeChild(downloadMsg);
                     }
-                }, 5000);
+                }, isMobile ? 8000 : 5000);
                 
             } catch (error) {
                 console.error('Download failed:', error);
@@ -661,14 +711,15 @@
                 
                 if (isMobile) {
                     errorMsg.innerHTML = `
-                        <div>❌ 下载失败</div>
+                        <div>❌ 下载初始化失败</div>
                         <div style="margin-top: 8px; font-size: 12px;">
                             请尝试：<br>
-                            1. 长按下方链接选择"下载"<br>
-                            2. 或复制链接到下载器中
+                            1. 刷新页面重试<br>
+                            2. 使用其他浏览器<br>
+                            3. 复制链接到下载器
                         </div>
                         <a href="${url}" target="_blank" style="color: white; text-decoration: underline; display: block; margin-top: 8px;">
-                            点击下载链接
+                            直接访问视频链接
                         </a>
                     `;
                 } else {
