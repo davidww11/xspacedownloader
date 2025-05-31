@@ -10,10 +10,11 @@ import json
 import logging
 import tempfile
 import smtplib
+import hashlib
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, abort
 from flask_cors import CORS
 import yt_dlp
 from urllib.parse import urlparse, parse_qs
@@ -36,9 +37,14 @@ class TwitterSpaceDownloader:
             'outtmpl': os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s'),
             'noplaylist': True,
             'extract_flat': False,
-            'writeinfojson': True,
+            'writeinfojson': False,
             'extractaudio': True,
             'audioformat': 'mp3',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
         }
     
     def normalize_twitter_url(self, url):
@@ -65,8 +71,111 @@ class TwitterSpaceDownloader:
         
         return any(re.match(pattern, url) for pattern in patterns)
     
+    def generate_safe_filename(self, title):
+        """Generate a safe filename from the space title"""
+        if not title:
+            title = "twitter_space"
+        
+        # Remove or replace invalid characters
+        safe_title = re.sub(r'[<>:"/\\|?*]', '', title)
+        safe_title = safe_title.strip().replace(' ', '_')
+        
+        # Limit length and add hash for uniqueness
+        url_hash = hashlib.md5(title.encode()).hexdigest()[:8]
+        safe_title = safe_title[:30] + f"_{url_hash}"
+        
+        return f"{safe_title}.mp3"
+    
+    def download_space_audio(self, url):
+        """Actually download the Twitter Space audio file"""
+        try:
+            url = self.normalize_twitter_url(url)
+            
+            if not self.validate_twitter_space_url(url):
+                raise ValueError("Invalid Twitter Space URL")
+            
+            logger.info(f"Starting download for Space: {url}")
+            
+            # First, extract info to get title
+            with yt_dlp.YoutubeDL({'quiet': True}) as ydl:
+                info = ydl.extract_info(url, download=False)
+                
+                if not info:
+                    raise ValueError("Could not extract Space information")
+                
+                # Check if it contains audio
+                if 'entries' in info:
+                    space_info = info['entries'][0] if info['entries'] else None
+                else:
+                    space_info = info
+                
+                if not space_info:
+                    raise ValueError("No Space found in the provided URL")
+                
+                title = space_info.get('title', 'Twitter Space')
+                author = space_info.get('uploader', 'Unknown')
+                duration = self.format_duration(space_info.get('duration'))
+                thumbnail = space_info.get('thumbnail', '')
+            
+            # Generate safe filename
+            filename = self.generate_safe_filename(title)
+            filepath = os.path.join(DOWNLOAD_DIR, filename)
+            
+            # Check if file already exists
+            if os.path.exists(filepath):
+                logger.info(f"File already exists: {filename}")
+                return {
+                    'title': title,
+                    'author': author,
+                    'duration': duration,
+                    'thumbnail': thumbnail,
+                    'filename': filename,
+                    'filepath': filepath,
+                    'download_url': f'/download/{filename}',
+                    'filesize': self.format_filesize(os.path.getsize(filepath))
+                }
+            
+            # Configure yt-dlp for actual download
+            download_opts = self.ydl_opts.copy()
+            download_opts['outtmpl'] = filepath.replace('.mp3', '.%(ext)s')
+            
+            # Download the audio
+            with yt_dlp.YoutubeDL(download_opts) as ydl:
+                logger.info(f"Downloading Space audio: {title}")
+                ydl.download([url])
+            
+            # Check if download was successful
+            if not os.path.exists(filepath):
+                # Sometimes the extension might be different, look for the file
+                base_name = filepath.replace('.mp3', '')
+                for ext in ['.mp3', '.m4a', '.webm', '.mp4']:
+                    alt_path = base_name + ext
+                    if os.path.exists(alt_path):
+                        # Rename to .mp3
+                        os.rename(alt_path, filepath)
+                        break
+                else:
+                    raise ValueError("Download completed but file not found")
+            
+            logger.info(f"Successfully downloaded: {filename}")
+            
+            return {
+                'title': title,
+                'author': author,
+                'duration': duration,
+                'thumbnail': thumbnail,
+                'filename': filename,
+                'filepath': filepath,
+                'download_url': f'/download/{filename}',
+                'filesize': self.format_filesize(os.path.getsize(filepath))
+            }
+                
+        except Exception as e:
+            logger.error(f"Error downloading Space: {str(e)}")
+            raise ValueError(f"Failed to download Space: {str(e)}")
+
     def extract_space_info(self, url):
-        """Extract Space information without downloading"""
+        """Extract Space information without downloading (legacy method)"""
         try:
             url = self.normalize_twitter_url(url)
             
@@ -277,6 +386,25 @@ def debug_page():
     """Serve the debug page"""
     return app.send_static_file('debug.html')
 
+@app.route('/download/<filename>')
+def download_file(filename):
+    """Serve downloaded audio files"""
+    try:
+        # Sanitize filename to prevent path traversal
+        safe_filename = os.path.basename(filename)
+        filepath = os.path.join(DOWNLOAD_DIR, safe_filename)
+        
+        if not os.path.exists(filepath):
+            logger.error(f"File not found: {filepath}")
+            abort(404)
+        
+        logger.info(f"Serving file: {safe_filename}")
+        return send_file(filepath, as_attachment=True, download_name=safe_filename)
+        
+    except Exception as e:
+        logger.error(f"Error serving file: {str(e)}")
+        abort(500)
+
 @app.route('/api/process-space', methods=['POST'])
 def process_space():
     """API endpoint to process Space download requests"""
@@ -336,7 +464,7 @@ def download_video():
 
 @app.route('/api/download-space', methods=['POST'])
 def download_space_direct():
-    """API endpoint to get direct download links for Twitter Spaces"""
+    """API endpoint to download Twitter Spaces and provide download links"""
     try:
         data = request.get_json()
         if not data or 'url' not in data:
@@ -346,25 +474,26 @@ def download_space_direct():
         
         logger.info(f"Processing direct Space download for: {url}")
         
-        # Extract Space information with download URLs
-        space_info = downloader.extract_space_info(url)
+        # Download the Space audio file
+        result = downloader.download_space_audio(url)
         
-        # Add direct download capability
-        if space_info['formats']:
-            # For each format, we can provide the direct URL from yt-dlp
-            # In a real implementation, you might want to:
-            # 1. Download the file to your server first
-            # 2. Serve it from your own domain for better reliability
-            # 3. Add expiration times for the links
-            
-            # For now, we'll return the direct URLs from the source
-            for format_info in space_info['formats']:
-                # The URLs from yt-dlp are already direct download links
-                pass
+        logger.info(f"Successfully downloaded Space: {result['title']}")
         
-        logger.info(f"Successfully extracted Space for direct download: {space_info['title']}")
-        
-        return jsonify(space_info)
+        # Return the local download information
+        return jsonify({
+            'title': result['title'],
+            'author': result['author'],
+            'duration': result['duration'],
+            'thumbnail': result['thumbnail'],
+            'formats': [{
+                'format_id': 'mp3',
+                'url': result['download_url'],
+                'ext': 'mp3',
+                'quality': 'High Quality (192kbps)',
+                'filesize': result['filesize'],
+                'filename': result['filename']
+            }]
+        })
         
     except ValueError as e:
         logger.error(f"Validation error: {str(e)}")
