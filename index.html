@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download Twitter Spaces audio recordings instantly and for free with our fast, secure Twitter Space Downloader. Save Twitter Spaces as MP3/MP4 files. No registration required.">
+    <meta name="description" content="Download Twitter Spaces audio recordings as MP3 instantly and for free with our fast, secure Twitter Space Downloader. Save Twitter Spaces audio files. No registration required.">
     <meta name="keywords" content="twitter space downloader, download twitter spaces, save twitter spaces, twitter spaces download, twitter spaces audio download, free twitter space downloader, twitter spaces recording download">
     <meta name="author" content="Twitter Space Downloader">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Twitter Space Downloader - Download Twitter Spaces Audio Free">
-    <meta property="og:description" content="Download Twitter Spaces audio recordings instantly and for free. High quality audio downloads with no registration required.">
+    <meta property="og:description" content="Download Twitter Spaces audio recordings as MP3 instantly and for free. High quality audio downloads with no registration required.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.pullvideo.com">
     <meta property="og:image" content="/images/twitter-space-downloader-preview.jpg">
@@ -18,10 +18,10 @@
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Twitter Space Downloader - Download Twitter Spaces Audio Free">
-    <meta name="twitter:description" content="Download Twitter Spaces audio recordings instantly and for free. High quality audio downloads with no registration required.">
+    <meta name="twitter:description" content="Download Twitter Spaces audio recordings as MP3 instantly and for free. High quality audio downloads with no registration required.">
     <meta name="twitter:image" content="/images/twitter-space-downloader-preview.jpg">
     
-    <title>Twitter Space Downloader - Download Twitter Spaces Audio Free</title>
+    <title>Twitter Space Downloader - Download Twitter Spaces as MP3 Free</title>
     
     <link rel="stylesheet" href="styles.css">
     <link rel="canonical" href="https://www.pullvideo.com">
@@ -40,7 +40,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "Twitter Space Downloader",
-        "description": "Free Twitter Space Downloader - Download Twitter Spaces audio recordings instantly and easily",
+        "description": "Free Twitter Space Downloader - Download Twitter Spaces audio recordings as MP3 instantly and easily",
         "url": "https://www.pullvideo.com",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "All",
@@ -51,662 +51,641 @@
         }
     }
     </script>
+    
+    <style>
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #ff6b9d, #ff8a9d);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem;
+            color: white;
+        }
+        
+        .right-panel {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            position: relative;
+        }
+        
+        .logo-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .logo-section .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        
+        .features-list {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .credit-info {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .powered-by {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .main-form {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .step-indicator {
+            color: #ff6b9d;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .step-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 2rem;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .url-input, .email-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .url-input:focus, .email-input:focus {
+            border-color: #ff6b9d;
+        }
+        
+        .btn-primary {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: #ff5a8a;
+        }
+        
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-download {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-download:hover {
+            background: #16a34a;
+        }
+        
+        .example-urls {
+            margin-top: 1rem;
+        }
+        
+        .example-url {
+            display: block;
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0.25rem 0;
+            text-decoration: none;
+        }
+        
+        .example-url:hover {
+            color: #ff6b9d;
+        }
+        
+        .checkmark {
+            color: #22c55e;
+            margin-right: 0.5rem;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .processing-icon {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #ff6b9d, #ff8a9d);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .processing-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+        
+        .processing-text {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .processing-description {
+            text-align: center;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .space-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .space-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .space-author {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .space-duration {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .download-options {
+            margin-top: 2rem;
+        }
+        
+        .download-options h3 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .format-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .format-option:hover {
+            border-color: #ff6b9d;
+        }
+        
+        .format-info {
+            flex: 1;
+        }
+        
+        .format-quality {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .format-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .format-download-btn {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .format-download-btn:hover {
+            background: #ff5a8a;
+        }
+        
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .back-btn:hover {
+            background: #4b5563;
+        }
+        
+        .learn-more-btn {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            background: #ff6b9d;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .learn-more-btn:hover {
+            background: #ff5a8a;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 2rem;
+            }
+            
+            .logo-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .learn-more-btn {
+                position: static;
+                margin-top: 2rem;
+                display: inline-block;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="static/images/logo.svg" alt="Twitter Space Downloader Logo" class="site-logo" style="height:32px;width:32px;vertical-align:middle;margin-right:10px;">
-                <h1 style="display:inline-block;vertical-align:middle;margin:0;">Twitter Space Downloader</h1>
-                <p class="tagline">Download Twitter Spaces Audio Free & Fast</p>
+    <div class="app-container">
+        <div class="left-panel">
+            <div class="logo-section">
+                <h1>Download Twitter<br>Spaces as MP3</h1>
+                <p class="subtitle">IDEAL FOR: REPURPOSING FOR PODCASTS OR OFFLINE LISTENING</p>
+                
+                <div class="features-list">
+                    <div>Up to 3 hours supported. Instant download.</div>
+                    <br>
+                    <div>URL of direct Twitter/X Space or post that shares one</div>
+                    <br>
+                    <div><strong>Valid URL Formats</strong></div>
+                    <div><span class="checkmark">✅</span>https://twitter.com/i/spaces/1RlkMnB</div>
+                    <div><span class="checkmark">✅</span>https://twitter.com/bob/status/1757362</div>
+                    <br>
+                    <div><em>Both twitter.com and x.com supported</em></div>
+                </div>
+                
+                <div class="credit-info">
+                    100% FREE - NO LIMITS
+                </div>
+                
+                <div class="powered-by">
+                    <span>POWERED BY</span>
+                    <strong>YT-DLP</strong>
+                </div>
             </div>
-            <nav class="nav" role="navigation" aria-label="Main navigation">
-                <ul>
-                    <li><a href="#downloader">Space Downloader</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-to">How To Use</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
         </div>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h2 class="hero-title">Twitter Space Downloader</h2>
-                <!--
-                <p class="hero-subtitle">Download Twitter Spaces audio recordings instantly for free</p>
-                <p class="hero-description">
-                    Save your favorite Twitter Spaces audio content in high quality with our free Twitter Space downloader. 
-                    No registration required, no watermarks, and completely free to use. 
-                    Simply paste the Twitter Spaces URL and download instantly as MP3 or MP4.
-                </p>
-                -->
-            </div>
-        </section>
-
-        <section id="downloader" class="downloader-section">
-            <div class="container">
-                <h2>Free Twitter Space Downloader</h2>
-                <div class="downloader-wrapper">
-                    <div class="downloader-container">
-                        <div class="input-section">
-                            <div class="input-wrapper">
-                                <input type="url" 
-                                       id="twitterUrl" 
-                                       placeholder="Paste Twitter Spaces URL here (e.g., https://twitter.com/i/spaces/1234567890)" 
-                                       class="url-input"
-                                       aria-label="Twitter Spaces URL">
-                                <button id="pasteBtn" class="paste-btn" type="button" title="Paste from clipboard" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:0.5rem 1rem;font-size:1rem;background:#1d9bf0;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:2;">📋 粘贴</button>
-                            </div>
-                            <button id="downloadBtn" class="download-btn" type="button">
-                                <span class="btn-text">Download Twitter Space</span>
-                                <span class="btn-loading" style="display: none;">
-                                    <span class="spinner"></span>
-                                    Processing...
-                                </span>
-                            </button>
-                        </div>
-                        
-                        <div id="result-section" class="result-section" style="display: none;">
-                            <div class="video-info">
-                                <div class="video-thumbnail">
-                                    <img id="videoThumbnail" src="" alt="Twitter Space thumbnail" style="display: none;">
-                                </div>
-                                <div class="video-details">
-                                    <h3 id="videoTitle">Twitter Space Title</h3>
-                                    <p id="videoAuthor">@username</p>
-                                    <p id="videoDuration">Duration: --:--</p>
-                                </div>
-                            </div>
-                            
-                            <div class="download-options">
-                                <h4>Choose Format:</h4>
-                                <div id="qualityOptions" class="quality-grid">
-                                    <!-- Quality options will be populated here -->
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div id="error-section" class="error-section" style="display: none;">
-                            <div class="error-icon">⚠️</div>
-                            <h3>Error</h3>
-                            <p id="errorMessage">Something went wrong. Please try again.</p>
-                            <button id="retryBtn" class="retry-btn">Try Again</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="features" class="features-section">
-            <div class="container">
-                <h2>Why Choose Our Twitter Space Downloader?</h2>
-                <div class="features-grid">
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">⚡</span>
-                        </div>
-                        <h3>Lightning Fast</h3>
-                        <p>Download Twitter Spaces audio in seconds with our optimized servers and fast processing technology.</p>
-                    </article>
-                    
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">🆓</span>
-                        </div>
-                        <h3>100% Free</h3>
-                        <p>Completely free Twitter Space downloader with no hidden fees, subscriptions, or registration required.</p>
-                    </article>
-                    
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">📱</span>
-                        </div>
-                        <h3>Mobile Friendly</h3>
-                        <p>Works perfectly on all devices - desktop, tablet, and mobile. Download Twitter Spaces anywhere, anytime.</p>
-                    </article>
-                    
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">🔒</span>
-                        </div>
-                        <h3>Safe & Secure</h3>
-                        <p>Your privacy is protected. We don't store your Twitter Spaces or personal information. Completely secure downloads.</p>
-                    </article>
-                    
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">🎵</span>
-                        </div>
-                        <h3>High Quality Audio</h3>
-                        <p>Download Twitter Spaces in original quality including high-definition audio. Multiple format options available (MP3, MP4).</p>
-                    </article>
-                    
-                    <article class="feature">
-                        <div class="feature-icon">
-                            <span aria-hidden="true">🌐</span>
-                        </div>
-                        <h3>No Software Needed</h3>
-                        <p>Browser-based Twitter Space downloader. No need to install any software or browser extensions.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="how-to" class="how-to-section">
-            <div class="container">
-                <h2>How to Download Twitter Spaces</h2>
-                <div class="steps-grid">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h3>Copy Twitter Space URL</h3>
-                        <p>Go to Twitter, find the Twitter Space you want to download, and copy the Space URL from your browser's address bar or share button.</p>
+        
+        <div class="right-panel">
+            <!-- Step 1: URL Input -->
+            <div id="step1" class="step active">
+                <div class="main-form">
+                    <div class="step-indicator">🎵 Enter Twitter/X Space URL:</div>
+                    <div class="step-description">
+                        Paste the URL of the Twitter Space you want to download as MP3
                     </div>
                     
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h3>Paste URL</h3>
-                        <p>Paste the Twitter Space URL into the downloader tool above and click the download button to process the audio.</p>
+                    <div class="input-group">
+                        <input type="url" 
+                               id="spaceUrl" 
+                               placeholder="https://x.com/i/spaces/1BRKjmEwVERxw" 
+                               class="url-input">
                     </div>
                     
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h3>Download Twitter Space</h3>
-                        <p>Choose your preferred audio format (MP3 or MP4) and quality, then click download to save the Twitter Space to your device.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="faq-section">
-            <div class="container">
-                <h2>Frequently Asked Questions About Twitter Space Downloader</h2>
-                <div class="faq-grid">
-                    <div class="faq-item">
-                        <h3>Is this Twitter Space downloader free?</h3>
-                        <p>Yes, our Twitter Space downloader is completely free to use with no hidden costs or subscription fees.</p>
-                    </div>
+                    <button id="urlSubmitBtn" class="btn-primary">
+                        <span class="btn-text">Download Space</span>
+                        <span class="btn-loading" style="display: none;">Processing...</span>
+                    </button>
                     
-                    <div class="faq-item">
-                        <h3>Do I need to create an account to download Twitter Spaces?</h3>
-                        <p>No registration or account creation is required. Simply paste the Twitter Space URL and download instantly.</p>
+                    <div class="example-urls">
+                        <small>Both twitter.com and x.com supported</small>
                     </div>
-                    
-                    <div class="faq-item">
-                        <h3>What audio formats are supported for Twitter Spaces?</h3>
-                        <p>We support multiple audio formats including MP3 and MP4, which are compatible with all devices and platforms.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h3>Can I download live Twitter Spaces?</h3>
-                        <p>Our Twitter Space downloader works best with recorded Spaces. Live Spaces may require the broadcast to end before downloading.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h3>Is it safe to use this Twitter Space downloader?</h3>
-                        <p>Yes, our service is completely safe and secure. We don't store your Twitter Spaces or collect personal information.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h3>What quality can I download Twitter Spaces in?</h3>
-                        <p>You can download Twitter Spaces in original quality, typically high-quality audio that preserves the conversation clarity.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="seo-content-section" style="background: #0f1419; padding: 4rem 0;">
-            <div class="container">
-                <h2>About Twitter Space Downloader</h2>
-                <div style="max-width: 800px; margin: 0 auto; line-height: 1.6; color: #8b98a5;">
-                    <p>Our <strong>Twitter Space downloader</strong> is the most reliable and fastest way to download Twitter Spaces audio content. Whether you want to save interesting conversations, interviews, or discussions from Twitter Spaces, our free tool makes it simple and quick.</p>
-                    
-                    <p>Twitter Spaces are live audio conversations that happen on Twitter, and sometimes you want to save these valuable discussions for later listening. Our <strong>Twitter Space downloader</strong> allows you to easily convert and download these audio broadcasts in high quality.</p>
-                    
-                    <p>With our advanced <strong>Twitter Space downloader</strong>, you can:</p>
-                    <ul style="margin: 1rem 0; padding-left: 2rem;">
-                        <li>Download Twitter Spaces in multiple audio formats</li>
-                        <li>Save high-quality audio recordings</li>
-                        <li>Access downloaded content offline</li>
-                        <li>Share interesting Twitter Spaces with friends</li>
-                        <li>Build your personal archive of valuable conversations</li>
-                    </ul>
-                    
-                    <p>Our <strong>Twitter Space downloader</strong> is designed to be user-friendly, requiring no technical knowledge. Simply paste the Twitter Space URL, choose your preferred format, and download instantly. The tool works on all devices and browsers, making it the perfect solution for anyone who wants to save Twitter Spaces content.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="benefits-section" style="background: #16202a; padding: 4rem 0;">
-            <div class="container">
-                <h2>Benefits of Using Our Twitter Space Downloader</h2>
-                <div class="benefits-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">Free Twitter Space Downloader</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Unlike other tools that charge for premium features, our Twitter Space downloader is completely free. Download unlimited Twitter Spaces without any restrictions or hidden fees.</p>
-                    </div>
-                    
-                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">High-Quality Audio Downloads</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Our Twitter Space downloader preserves the original audio quality, ensuring you get crisp, clear recordings of your favorite Twitter Spaces conversations.</p>
-                    </div>
-                    
-                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">No Registration Required</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Start using our Twitter Space downloader immediately without creating an account. Simply paste the URL and download - it's that easy!</p>
-                    </div>
-                    
-                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">Multiple Format Support</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Download Twitter Spaces in various formats including MP3 for audio-only and MP4 for video recordings, compatible with all devices.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="comparison-section" style="background: #0f1419; padding: 4rem 0;">
-            <div class="container">
-                <h2>Why Choose Our Twitter Space Downloader Over Others?</h2>
-                <div style="max-width: 1000px; margin: 2rem auto;">
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; background: #16202a; border-radius: 12px; overflow: hidden;">
-                            <thead>
-                                <tr style="background: #1d9bf0;">
-                                    <th style="padding: 1rem; text-align: left; color: white;">Feature</th>
-                                    <th style="padding: 1rem; text-align: center; color: white;">Our Twitter Space Downloader</th>
-                                    <th style="padding: 1rem; text-align: center; color: white;">Other Tools</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: 1px solid #2f3336;">
-                                    <td style="padding: 1rem; color: #e7e9ea;">Free to Use</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ 100% Free</td>
-                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Premium Required</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #2f3336;">
-                                    <td style="padding: 1rem; color: #e7e9ea;">No Registration</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ No Account Needed</td>
-                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Registration Required</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #2f3336;">
-                                    <td style="padding: 1rem; color: #e7e9ea;">Audio Quality</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Original Quality</td>
-                                    <td style="padding: 1rem; text-align: center; color: #ffad1f;">⚠️ Compressed</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #2f3336;">
-                                    <td style="padding: 1rem; color: #e7e9ea;">Download Speed</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Lightning Fast</td>
-                                    <td style="padding: 1rem; text-align: center; color: #ffad1f;">⚠️ Slow Processing</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #2f3336;">
-                                    <td style="padding: 1rem; color: #e7e9ea;">Mobile Support</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Full Mobile Support</td>
-                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Desktop Only</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; color: #e7e9ea;">Privacy Protection</td>
-                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ No Data Stored</td>
-                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Data Collection</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="use-cases-section" style="background: #16202a; padding: 4rem 0;">
-            <div class="container">
-                <h2>Popular Use Cases for Twitter Space Downloader</h2>
-                <div class="use-cases-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎙️</div>
-                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Podcast Content Creation</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Content creators use our Twitter Space downloader to save valuable conversations for podcast episodes or content repurposing.</p>
-                    </div>
-                    
-                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">📚</div>
-                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Educational Content</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Students and educators download Twitter Spaces containing lectures, discussions, and educational content for offline study.</p>
-                    </div>
-                    
-                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
-                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Business Research</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Professionals save industry discussions and expert interviews from Twitter Spaces for market research and business insights.</p>
-                    </div>
-                    
-                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎵</div>
-                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Music & Entertainment</h3>
-                        <p style="color: #8b98a5; line-height: 1.6;">Music fans download Twitter Spaces featuring live performances, artist interviews, and exclusive content from their favorite musicians.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="tips-section" style="background: #0f1419; padding: 4rem 0;">
-            <div class="container">
-                <h2>Tips for Using Twitter Space Downloader Effectively</h2>
-                <div style="max-width: 800px; margin: 2rem auto;">
-                    <div class="tips-list">
-                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
-                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">1</div>
-                            <div>
-                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Check Twitter Spaces Availability</h3>
-                                <p style="color: #8b98a5; line-height: 1.6;">Our Twitter Space downloader works best with recorded Spaces. Live Spaces may need to finish before downloading is possible.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
-                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">2</div>
-                            <div>
-                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Choose the Right Format</h3>
-                                <p style="color: #8b98a5; line-height: 1.6;">Select MP3 for audio-only files (smaller size) or MP4 to preserve any visual elements from the Twitter Spaces.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
-                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">3</div>
-                            <div>
-                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Copy the Correct URL</h3>
-                                <p style="color: #8b98a5; line-height: 1.6;">Make sure to copy the full Twitter Spaces URL from the address bar or share button for best results with our downloader.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="tip-item" style="display: flex; align-items: flex-start; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
-                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">4</div>
-                            <div>
-                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Respect Copyright and Privacy</h3>
-                                <p style="color: #8b98a5; line-height: 1.6;">Only download Twitter Spaces content you have permission to save, and respect the privacy and copyright of content creators.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer id="contact" class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Twitter Space Downloader</h3>
-                    <p>The fastest and most reliable way to download Twitter Spaces audio for free. Available worldwide.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contact Information</h3>
-                    <p>Email: </p>
-                    <p>Business Hours: 24/7 Online Support</p>
-                    <p>Response Time: Within 24 hours</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#downloader">Twitter Space Downloader</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#how-to">How to Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <p>This Twitter Space downloader is for downloading audio content you own or have permission to download. Please respect copyright laws and Twitter's terms of service.</p>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Twitter Space Downloader. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">DMCA</a></p>
+            <!-- Step 2: Processing -->
+            <div id="step2" class="step">
+                <div class="processing-icon">
+                    <div style="font-size: 4rem;">🎵</div>
+                </div>
+                
+                <div class="processing-text">Processing Space...</div>
+                
+                <div class="processing-description">
+                    Extracting audio from Twitter Space<br>
+                    This may take a few moments
+                </div>
             </div>
+            
+            <!-- Step 3: Download Ready -->
+            <div id="step3" class="step">
+                <div class="space-info">
+                    <div class="space-title" id="spaceTitle">Space Title</div>
+                    <div class="space-author" id="spaceAuthor">@username</div>
+                    <div class="space-duration" id="spaceDuration">Duration: --:--</div>
+                </div>
+                
+                <div class="download-options">
+                    <h3>Choose Quality & Download:</h3>
+                    <div id="formatOptions">
+                        <!-- Format options will be populated here -->
+                    </div>
+                </div>
+                
+                <button class="back-btn" onclick="resetForm()">Download Another Space</button>
+            </div>
+            
+            <a href="#" class="learn-more-btn">Learn more about XSpace Downloader</a>
         </div>
-    </footer>
-    <div style="display: none;">
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5F6XX9E5G7"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-5F6XX9E5G7');
-        </script>
     </div>
+
     <script>
-        class TwitterSpaceDownloader {
-            constructor() {
-                this.initializeElements();
-                this.bindEvents();
+        // Simple step management
+        let currentStep = 1;
+        
+        // DOM elements
+        const urlInput = document.getElementById('spaceUrl');
+        const urlSubmitBtn = document.getElementById('urlSubmitBtn');
+        
+        // Step navigation
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Show target step
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            currentStep = stepNumber;
+        }
+        
+        // URL validation
+        function isValidSpaceUrl(url) {
+            const patterns = [
+                /https?:\/\/(www\.)?(twitter\.com|x\.com)\/i\/spaces\/[a-zA-Z0-9]+/,
+                /https?:\/\/(www\.)?(twitter\.com|x\.com)\/\w+\/status\/\d+/
+            ];
+            return patterns.some(pattern => pattern.test(url));
+        }
+        
+        // Button loading state
+        function setButtonLoading(button, loading) {
+            const textSpan = button.querySelector('.btn-text');
+            const loadingSpan = button.querySelector('.btn-loading');
+            
+            if (loading) {
+                textSpan.style.display = 'none';
+                loadingSpan.style.display = 'inline';
+                button.disabled = true;
+            } else {
+                textSpan.style.display = 'inline';
+                loadingSpan.style.display = 'none';
+                button.disabled = false;
             }
-
-            initializeElements() {
-                this.urlInput = document.getElementById('twitterUrl');
-                this.downloadBtn = document.getElementById('downloadBtn');
-                this.btnText = this.downloadBtn.querySelector('.btn-text');
-                this.btnLoading = this.downloadBtn.querySelector('.btn-loading');
-                this.resultSection = document.getElementById('result-section');
-                this.errorSection = document.getElementById('error-section');
-                this.retryBtn = document.getElementById('retryBtn');
-                this.pasteBtn = document.getElementById('pasteBtn');
+        }
+        
+        // Reset form to start over
+        function resetForm() {
+            urlInput.value = '';
+            showStep(1);
+            setButtonLoading(urlSubmitBtn, false);
+        }
+        
+        // Download file function
+        function downloadFile(url, filename) {
+            // Check if it's an M3U8 playlist
+            if (url.includes('.m3u8')) {
+                // For M3U8 files, open in a new tab and let the browser handle it
+                // The browser will typically download it or the user can right-click to save
+                window.open(url, '_blank');
+                
+                // Show helpful instructions
+                alert(`播放列表已在新标签页中打开！\n\n如需下载：\n1. 右键点击播放器\n2. 选择"另存为"或"下载"\n3. 或者使用专业的M3U8下载工具\n\n提示：这是一个音频播放列表文件，包含完整的Space录音。`);
+            } else {
+                // For direct files, use normal download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename || 'space.mp3';
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
-
-            bindEvents() {
-                this.downloadBtn.addEventListener('click', () => this.handleDownload());
-                this.retryBtn.addEventListener('click', () => this.resetForm());
-                this.urlInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.handleDownload();
+        }
+        
+        // Handle URL submission
+        urlSubmitBtn.addEventListener('click', async () => {
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('Please enter a Twitter Space URL');
+                return;
+            }
+            
+            if (!isValidSpaceUrl(url)) {
+                alert('Please enter a valid Twitter Space URL\n\nExample formats:\n• https://twitter.com/i/spaces/1BRKjmEwVERxw\n• https://x.com/i/spaces/1BRKjmEwVERxw\n• https://twitter.com/username/status/1234567890');
+                return;
+            }
+            
+            setButtonLoading(urlSubmitBtn, true);
+            
+            try {
+                // Move to processing step
+                showStep(2);
+                
+                // Call our API to process the space download
+                const response = await fetch('/api/download-space', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        url: url
+                    })
                 });
-                this.urlInput.addEventListener('input', () => this.validateUrl());
-                this.pasteBtn.addEventListener('click', async () => {
-                    if (navigator.clipboard && window.isSecureContext) {
-                        try {
-                            const text = await navigator.clipboard.readText();
-                            if (text) {
-                                this.urlInput.value = text;
-                                this.validateUrl();
-                            }
-                        } catch (err) {
-                            alert('无法读取剪贴板内容，请手动粘贴');
-                        }
-                    } else {
-                        alert('当前浏览器不支持一键粘贴，请手动粘贴');
-                    }
-                });
-            }
-
-            validateUrl() {
-                const url = this.urlInput.value.trim();
-                const isValid = this.isValidTwitterSpaceUrl(url);
-                this.downloadBtn.disabled = !isValid || !url;
-                return isValid;
-            }
-
-            isValidTwitterSpaceUrl(url) {
-                const patterns = [
-                    // Twitter Spaces direct URLs
-                    /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/i\/spaces\/\w+/,
-                    // Twitter posts that may contain Spaces
-                    /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/\w+\/status\/\d+/,
-                    // Shortened Twitter links
-                    /^https?:\/\/t\.co\/\w+/
-                ];
-                return patterns.some(pattern => pattern.test(url));
-            }
-
-            async handleDownload() {
-                if (!this.validateUrl()) {
-                    this.showError('Please enter a valid Twitter/X Space URL');
-                    return;
-                }
-
-                const url = this.urlInput.value.trim();
-
-                this.setLoading(true);
-                this.hideError();
-                this.hideResult();
-
-                try {
-                    const response = await fetch('/api/download', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ url })
-                    });
-
+                
+                if (response.ok) {
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Download failed');
-                    }
-
-                    this.showResult(data);
-                } catch (error) {
-                    console.error('Download error:', error);
                     
-                    // Provide more detailed error information
-                    let errorMessage = 'Failed to download space. Please try again.';
+                    // Update space info
+                    document.getElementById('spaceTitle').textContent = data.title || 'Twitter Space';
+                    document.getElementById('spaceAuthor').textContent = data.author || '@unknown';
+                    document.getElementById('spaceDuration').textContent = `Duration: ${data.duration || 'Unknown'}`;
                     
-                    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                        errorMessage = '❌ Network connection failed. Please check:\n' +
-                                     '• Is the server running on port 8000?\n' +
-                                     '• Try accessing http://localhost:8000/debug for diagnostics\n' +
-                                     '• Check browser console for more details';
-                    } else if (error.message) {
-                        errorMessage = error.message;
-                    }
+                    // Populate download options
+                    const formatOptions = document.getElementById('formatOptions');
+                    formatOptions.innerHTML = '';
                     
-                    this.showError(errorMessage);
-                } finally {
-                    this.setLoading(false);
-                }
-            }
-
-            setLoading(loading) {
-                this.downloadBtn.disabled = loading;
-                this.btnText.style.display = loading ? 'none' : 'inline';
-                this.btnLoading.style.display = loading ? 'flex' : 'none';
-            }
-
-            showResult(data) {
-                const videoTitle = document.getElementById('videoTitle');
-                const videoAuthor = document.getElementById('videoAuthor');
-                const videoDuration = document.getElementById('videoDuration');
-                const videoThumbnail = document.getElementById('videoThumbnail');
-                const qualityOptions = document.getElementById('qualityOptions');
-
-                // Update video info
-                videoTitle.textContent = data.title || 'Twitter Space';
-                videoAuthor.textContent = data.author || '@unknown';
-                videoDuration.textContent = `Duration: ${data.duration || 'Unknown'}`;
-
-                // Update thumbnail
-                if (data.thumbnail) {
-                    videoThumbnail.src = data.thumbnail;
-                    videoThumbnail.style.display = 'block';
-                } else {
-                    videoThumbnail.style.display = 'none';
-                }
-
-                // Clear and populate quality options
-                qualityOptions.innerHTML = '';
-
-                if (data.formats && data.formats.length > 0) {
-                    data.formats.forEach(format => {
+                    if (data.formats && data.formats.length > 0) {
+                        data.formats.forEach(format => {
+                            const optionDiv = document.createElement('div');
+                            optionDiv.className = 'format-option';
+                            
+                            optionDiv.innerHTML = `
+                                <div class="format-info">
+                                    <div class="format-quality">${format.quality || 'Standard Quality'}</div>
+                                    <div class="format-details">MP3 • ${format.filesize || 'Unknown size'}</div>
+                                </div>
+                                <button class="format-download-btn" onclick="downloadFile('${format.url}', '${format.filename || 'space.mp3'}')">
+                                    Download
+                                </button>
+                            `;
+                            
+                            formatOptions.appendChild(optionDiv);
+                        });
+                    } else {
+                        // Fallback option
                         const optionDiv = document.createElement('div');
-                        optionDiv.className = 'quality-option';
+                        optionDiv.className = 'format-option';
                         
                         optionDiv.innerHTML = `
-                            <div class="quality-info">
-                                <div class="quality-label">${format.quality || 'Standard Quality'}</div>
-                                <div class="quality-details">${format.ext?.toUpperCase() || 'MP4'} • ${format.filesize || 'Unknown size'}</div>
+                            <div class="format-info">
+                                <div class="format-quality">Standard Quality</div>
+                                <div class="format-details">MP3 • Download Available</div>
                             </div>
-                            <button class="quality-download-btn" onclick="window.downloadFile('${format.url}', '${format.filename || 'space'}')">
+                            <button class="format-download-btn" onclick="downloadFile('${data.download_url || '#'}', '${data.filename || 'space.mp3'}')">
                                 Download
                             </button>
                         `;
                         
-                        qualityOptions.appendChild(optionDiv);
-                    });
+                        formatOptions.appendChild(optionDiv);
+                    }
+                    
+                    // Move to download step
+                    showStep(3);
                 } else {
-                    // Fallback single download option
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'quality-option';
-                    
-                    optionDiv.innerHTML = `
-                        <div class="quality-info">
-                            <div class="quality-label">Download</div>
-                            <div class="quality-details">${data.format?.toUpperCase() || 'MP4'}</div>
-                        </div>
-                        <button class="quality-download-btn" onclick="window.downloadFile('${data.download_url}', '${data.filename || 'space'}')">
-                            Download
-                        </button>
-                    `;
-                    
-                    qualityOptions.appendChild(optionDiv);
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Failed to process Space. Please try again.');
+                    showStep(1);
                 }
-
-                this.resultSection.style.display = 'block';
+            } catch (error) {
+                alert('Failed to process request. Please check your connection and try again.');
+                showStep(1);
+            } finally {
+                setButtonLoading(urlSubmitBtn, false);
             }
-
-            showError(message) {
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.textContent = message;
-                this.errorSection.style.display = 'block';
-                this.resultSection.style.display = 'none';
-            }
-
-            hideError() {
-                this.errorSection.style.display = 'none';
-            }
-
-            hideResult() {
-                this.resultSection.style.display = 'none';
-            }
-
-            resetForm() {
-                this.urlInput.value = '';
-                this.hideError();
-                this.hideResult();
-                this.downloadBtn.disabled = true;
-            }
-        }
-
-        // Enhanced download function with mobile optimization
-        window.downloadFile = function(url, filename) {
-            // 自动化下载逻辑：优先fetch+blob，失败则跳转
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.blob();
-                })
-                .then(blob => {
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = filename || 'space.mp4';
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
-                })
-                .catch(() => {
-                    // fetch+blob失败，直接跳转到视频链接
-                    window.location.href = url;
-                });
-        };
-
-        // Initialize the downloader when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            new TwitterSpaceDownloader();
         });
+        
+        // Handle Enter key
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                urlSubmitBtn.click();
+            }
+        });
+        
+        // Prefill test URL for development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            urlInput.value = 'https://x.com/i/spaces/1BRKjmEwVERxw';
+        }
     </script>
 </body>
 </html> 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Twitter Video Downloader API
-A Flask-based API for downloading Twitter/X videos using yt-dlp
+Twitter Space Downloader API
+A Flask-based API for downloading Twitter/X Spaces using yt-dlp
 """
 
 import os
@@ -9,7 +9,10 @@ import re
 import json
 import logging
 import tempfile
+import smtplib
 from datetime import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import yt_dlp
@@ -23,16 +26,19 @@ app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)  # Enable CORS for frontend integration
 
 # Configuration
-DOWNLOAD_DIR = os.path.join(tempfile.gettempdir(), 'twitter_downloads')
+DOWNLOAD_DIR = os.path.join(tempfile.gettempdir(), 'twitter_spaces')
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-class TwitterVideoDownloader:
+class TwitterSpaceDownloader:
     def __init__(self):
         self.ydl_opts = {
-            'format': 'best[ext=mp4]/best',
+            'format': 'best[ext=m4a]/best[ext=mp3]/best',
             'outtmpl': os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s'),
             'noplaylist': True,
             'extract_flat': False,
+            'writeinfojson': True,
+            'extractaudio': True,
+            'audioformat': 'mp3',
         }
     
     def normalize_twitter_url(self, url):
@@ -49,121 +55,175 @@ class TwitterVideoDownloader:
         
         return url
     
-    def validate_twitter_url(self, url):
-        """Validate if the URL is a valid Twitter video URL"""
+    def validate_twitter_space_url(self, url):
+        """Validate if the URL is a valid Twitter Space URL"""
         patterns = [
+            r'https?://(www\.)?(twitter\.com|x\.com)/i/spaces/[a-zA-Z0-9]+',
             r'https?://(www\.)?(twitter\.com|x\.com)/.+/status/\d+',
             r'https?://t\.co/.+'
         ]
         
         return any(re.match(pattern, url) for pattern in patterns)
     
-    def extract_video_info(self, url):
-        """Extract video information without downloading"""
+    def extract_space_info(self, url):
+        """Extract Space information without downloading"""
         try:
             url = self.normalize_twitter_url(url)
             
-            if not self.validate_twitter_url(url):
-                raise ValueError("Invalid Twitter URL")
+            if not self.validate_twitter_space_url(url):
+                raise ValueError("Invalid Twitter Space URL")
             
             # Extract info only
             with yt_dlp.YoutubeDL({'quiet': True}) as ydl:
                 info = ydl.extract_info(url, download=False)
                 
                 if not info:
-                    raise ValueError("Could not extract video information")
+                    raise ValueError("Could not extract Space information")
                 
-                # Check if it contains video
+                # Check if it contains audio
                 if 'entries' in info:
-                    # It's a playlist, get the first video
-                    video_info = info['entries'][0] if info['entries'] else None
+                    # It's a playlist, get the first entry
+                    space_info = info['entries'][0] if info['entries'] else None
                 else:
-                    video_info = info
+                    space_info = info
                 
-                if not video_info:
-                    raise ValueError("No video found in the provided URL")
+                if not space_info:
+                    raise ValueError("No Space found in the provided URL")
                 
-                # Extract available formats
+                # Extract available formats (audio only)
                 formats = []
-                if 'formats' in video_info and video_info['formats']:
-                    # 使用字典来存储每个分辨率的最佳格式
-                    quality_formats = {}
-                    for fmt in video_info['formats']:
-                        if fmt.get('vcodec') != 'none':  # Only video formats
-                            quality = self.get_quality_label(fmt)
-                            # 获取当前格式的文件大小，确保为数字
+                if 'formats' in space_info and space_info['formats']:
+                    # Filter for audio formats only
+                    audio_formats = {}
+                    for fmt in space_info['formats']:
+                        if fmt.get('acodec') != 'none' and fmt.get('vcodec') == 'none':  # Audio only
+                            quality = self.get_audio_quality_label(fmt)
+                            # Get current format file size
                             try:
                                 current_size = int(fmt.get('filesize') or 0)
                             except Exception:
                                 current_size = 0
                             try:
-                                prev_size = int(quality_formats[quality].get('raw_filesize', 0)) if quality in quality_formats else 0
+                                prev_size = int(audio_formats[quality].get('raw_filesize', 0)) if quality in audio_formats else 0
                             except Exception:
                                 prev_size = 0
-                            # 如果这个分辨率还没有记录，或者当前格式的文件大小更大（质量更好），则更新
-                            if quality not in quality_formats or current_size > prev_size:
-                                quality_formats[quality] = {
+                            # Keep the format with larger file size (better quality)
+                            if quality not in audio_formats or current_size > prev_size:
+                                audio_formats[quality] = {
                                     'format_id': fmt.get('format_id', ''),
                                     'url': fmt.get('url', ''),
-                                    'ext': fmt.get('ext', 'mp4'),
+                                    'ext': 'mp3',  # Convert all to MP3
                                     'quality': quality,
                                     'filesize': self.format_filesize(fmt.get('filesize')),
                                     'raw_filesize': current_size,
-                                    'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{fmt.get('ext', 'mp4')}"
+                                    'filename': f"{self.sanitize_filename(space_info.get('title', 'space'))}.mp3"
                                 }
                     
-                    # 将去重后的格式添加到列表中（去掉raw_filesize字段）
-                    formats = [{k: v for k, v in f.items() if k != 'raw_filesize'} for f in quality_formats.values()]
+                    # Convert to list without raw_filesize
+                    formats = [{k: v for k, v in f.items() if k != 'raw_filesize'} for f in audio_formats.values()]
                 
                 # If no formats found, try the direct URL
-                if not formats and video_info.get('url'):
+                if not formats and space_info.get('url'):
                     formats.append({
                         'format_id': 'direct',
-                        'url': video_info['url'],
-                        'ext': video_info.get('ext', 'mp4'),
+                        'url': space_info['url'],
+                        'ext': 'mp3',
                         'quality': 'Standard Quality',
-                        'filesize': self.format_filesize(video_info.get('filesize')),
-                        'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{video_info.get('ext', 'mp4')}"
+                        'filesize': self.format_filesize(space_info.get('filesize')),
+                        'filename': f"{self.sanitize_filename(space_info.get('title', 'space'))}.mp3"
                     })
                 
                 return {
-                    'title': video_info.get('title', 'Twitter Video'),
-                    'author': video_info.get('uploader', 'Unknown'),
-                    'duration': self.format_duration(video_info.get('duration')),
-                    'thumbnail': video_info.get('thumbnail', ''),
-                    'formats': formats[:5] if formats else []  # Limit to 5 formats
+                    'title': space_info.get('title', 'Twitter Space'),
+                    'author': space_info.get('uploader', 'Unknown'),
+                    'duration': self.format_duration(space_info.get('duration')),
+                    'thumbnail': space_info.get('thumbnail', ''),
+                    'formats': formats[:3] if formats else []  # Limit to 3 formats
                 }
                 
         except Exception as e:
-            logger.error(f"Error extracting video info: {str(e)}")
-            raise ValueError(f"Failed to extract video information: {str(e)}")
+            logger.error(f"Error extracting Space info: {str(e)}")
+            raise ValueError(f"Failed to extract Space information: {str(e)}")
     
-    def get_quality_label(self, fmt):
-        """Generate a human-readable quality label"""
-        height = fmt.get('height')
-        width = fmt.get('width')
+    def get_audio_quality_label(self, fmt):
+        """Generate a human-readable audio quality label"""
+        abr = fmt.get('abr')  # Audio bitrate
+        asr = fmt.get('asr')  # Audio sample rate
         
-        if height:
-            if height >= 1080:
-                return "1080p HD"
-            elif height >= 720:
-                return "720p HD"
-            elif height >= 480:
-                return "480p"
-            elif height >= 360:
-                return "360p"
+        if abr:
+            if abr >= 320:
+                return "High Quality (320kbps)"
+            elif abr >= 256:
+                return "High Quality (256kbps)"
+            elif abr >= 192:
+                return "Good Quality (192kbps)"
+            elif abr >= 128:
+                return "Standard Quality (128kbps)"
             else:
-                return f"{height}p"
-        elif width:
-            if width >= 1920:
-                return "1080p HD"
-            elif width >= 1280:
-                return "720p HD"
+                return f"Basic Quality ({int(abr)}kbps)"
+        elif asr:
+            if asr >= 48000:
+                return "High Quality (48kHz)"
+            elif asr >= 44100:
+                return "CD Quality (44.1kHz)"
             else:
                 return "Standard Quality"
         else:
             return "Standard Quality"
     
+    def process_space_download(self, url, email):
+        """Process Space download and send email notification"""
+        try:
+            # Extract Space info
+            space_info = self.extract_space_info(url)
+            
+            # In a real implementation, you would:
+            # 1. Add the download job to a queue
+            # 2. Process the download in the background
+            # 3. Send email when complete
+            
+            # For MVP, we'll simulate the process
+            logger.info(f"Processing Space download for: {space_info['title']} -> {email}")
+            
+            # Simulate email sending
+            self.send_notification_email(email, space_info)
+            
+            return {
+                'success': True,
+                'message': 'Your Space download request has been queued',
+                'space_info': space_info
+            }
+            
+        except Exception as e:
+            logger.error(f"Error processing Space download: {str(e)}")
+            raise ValueError(f"Failed to process Space download: {str(e)}")
+    
+    def send_notification_email(self, email, space_info):
+        """Send download notification email (simulated for MVP)"""
+        # In a real implementation, you would configure SMTP settings
+        # and send actual emails with download links
+        logger.info(f"Simulating email to {email} for Space: {space_info['title']}")
+        
+        # For MVP, we just log the email content
+        email_content = f"""
+        Subject: Your Twitter Space Download is Ready!
+        
+        Hi there!
+        
+        Your Twitter Space download is ready:
+        
+        Title: {space_info['title']}
+        Author: {space_info['author']}
+        Duration: {space_info['duration']}
+        
+        Download Link: [This would be a real download link in production]
+        
+        Thank you for using our Twitter Space Downloader!
+        """
+        
+        logger.info(f"Email content:\n{email_content}")
+        return True
+
     def format_filesize(self, size):
         """Format file size in human readable format"""
         if not size:
@@ -180,14 +240,19 @@ class TwitterVideoDownloader:
         if not duration:
             return "Unknown"
         
-        minutes = int(duration // 60)
+        hours = int(duration // 3600)
+        minutes = int((duration % 3600) // 60)
         seconds = int(duration % 60)
-        return f"{minutes:02d}:{seconds:02d}"
+        
+        if hours > 0:
+            return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        else:
+            return f"{minutes:02d}:{seconds:02d}"
     
     def sanitize_filename(self, filename):
         """Sanitize filename for safe download"""
         if not filename:
-            return "video"
+            return "space"
         
         # Remove or replace invalid characters
         filename = re.sub(r'[<>:"/\\|?*]', '', filename)
@@ -195,7 +260,7 @@ class TwitterVideoDownloader:
         return filename[:50]  # Limit length
 
 # Initialize downloader
-downloader = TwitterVideoDownloader()
+downloader = TwitterSpaceDownloader()
 
 @app.route('/')
 def home():
@@ -212,28 +277,94 @@ def debug_page():
     """Serve the debug page"""
     return app.send_static_file('debug.html')
 
+@app.route('/api/process-space', methods=['POST'])
+def process_space():
+    """API endpoint to process Space download requests"""
+    try:
+        data = request.get_json()
+        if not data or 'url' not in data or 'email' not in data:
+            return jsonify({'error': 'URL and email are required'}), 400
+        
+        url = data['url']
+        email = data['email']
+        
+        # Validate email format
+        if not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
+            return jsonify({'error': 'Invalid email format'}), 400
+        
+        logger.info(f"Processing Space download request for: {url} -> {email}")
+        
+        # Process the Space download
+        result = downloader.process_space_download(url, email)
+        
+        logger.info(f"Successfully queued Space download: {result['space_info']['title']}")
+        
+        return jsonify(result)
+        
+    except ValueError as e:
+        logger.error(f"Validation error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({'error': 'Internal server error occurred'}), 500
+
 @app.route('/api/download', methods=['POST'])
 def download_video():
-    """API endpoint to process video download requests"""
+    """Legacy API endpoint - redirects to space processing"""
     try:
         data = request.get_json()
         if not data or 'url' not in data:
             return jsonify({'error': 'URL is required'}), 400
         
         url = data['url']
-        format_type = data.get('format', 'mp4')
         
-        logger.info(f"Processing download request for: {url}")
+        logger.info(f"Legacy endpoint called for: {url}")
         
-        # Extract video information
-        video_info = downloader.extract_video_info(url)
+        # Extract Space information for legacy compatibility
+        space_info = downloader.extract_space_info(url)
         
-        if not video_info['formats']:
-            return jsonify({'error': 'No downloadable video formats found'}), 404
+        logger.info(f"Successfully extracted Space info: {space_info['title']}")
         
-        logger.info(f"Successfully extracted video info: {video_info['title']}")
+        return jsonify(space_info)
         
-        return jsonify(video_info)
+    except ValueError as e:
+        logger.error(f"Validation error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({'error': 'Internal server error occurred'}), 500
+
+@app.route('/api/download-space', methods=['POST'])
+def download_space_direct():
+    """API endpoint to get direct download links for Twitter Spaces"""
+    try:
+        data = request.get_json()
+        if not data or 'url' not in data:
+            return jsonify({'error': 'URL is required'}), 400
+        
+        url = data['url']
+        
+        logger.info(f"Processing direct Space download for: {url}")
+        
+        # Extract Space information with download URLs
+        space_info = downloader.extract_space_info(url)
+        
+        # Add direct download capability
+        if space_info['formats']:
+            # For each format, we can provide the direct URL from yt-dlp
+            # In a real implementation, you might want to:
+            # 1. Download the file to your server first
+            # 2. Serve it from your own domain for better reliability
+            # 3. Add expiration times for the links
+            
+            # For now, we'll return the direct URLs from the source
+            for format_info in space_info['formats']:
+                # The URLs from yt-dlp are already direct download links
+                pass
+        
+        logger.info(f"Successfully extracted Space for direct download: {space_info['title']}")
+        
+        return jsonify(space_info)
         
     except ValueError as e:
         logger.error(f"Validation error: {str(e)}")
@@ -259,7 +390,7 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('DEBUG', 'False').lower() == 'true'
     
-    logger.info(f"Starting Twitter Video Downloader API on port {port}")
+    logger.info(f"Starting Twitter Space Downloader API on port {port}")
     logger.info(f"Download directory: {DOWNLOAD_DIR}")
     
     app.run(host='0.0.0.0', port=port, debug=debug) 
