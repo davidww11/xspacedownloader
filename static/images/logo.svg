@@ -1,7 +1,14 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="24" cy="24" r="24" fill="#1da1f2"/>
+  <circle cx="24" cy="24" r="24" fill="url(#gradient)"/>
   <path d="M24 12L24 32" stroke="white" stroke-width="3" stroke-linecap="round"/>
   <path d="M18 26L24 32L30 26" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <polygon points="20,18 32,24 20,30" fill="white" opacity="0.7"/>
+  <polygon points="20,18 32,24 20,30" fill="white" opacity="0.8"/>
   <path d="M14 18C18 10 34 10 34 18" stroke="white" stroke-width="2" fill="none"/>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce7f3;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f9a8d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 </svg> 

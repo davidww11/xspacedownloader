@@ -371,10 +371,15 @@ class TwitterSpaceDownloader:
 # Initialize downloader
 downloader = TwitterSpaceDownloader()
 
+@app.route('/favicon.ico')
+def favicon():
+    """Serve favicon"""
+    return send_file('static/images/logo.svg', mimetype='image/svg+xml')
+
 @app.route('/')
 def home():
     """Serve the main page"""
-    return app.send_static_file('index.html')
+    return send_file('index.html')
 
 @app.route('/test')
 def test_page():
