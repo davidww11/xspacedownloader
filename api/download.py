@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Vercel Serverless Function for Twitter Video Download API
+Vercel Serverless Function for Twitter Spaces Download API
 """
 
 import os
@@ -15,7 +15,7 @@ import yt_dlp
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class TwitterVideoDownloader:
+class TwitterSpaceDownloader:
     def __init__(self):
         self.ydl_opts = {
             'format': 'best[ext=mp4]/best',
@@ -33,43 +33,45 @@ class TwitterVideoDownloader:
         url = url.replace('x.com', 'twitter.com')
         return url
     
-    def validate_twitter_url(self, url):
-        """Validate if the URL is a valid Twitter video URL"""
+    def validate_twitter_space_url(self, url):
+        """Validate if the URL is a valid Twitter Spaces URL"""
         patterns = [
+            r'https?://(www\.)?(twitter\.com|x\.com)/i/spaces/\w+',
             r'https?://(www\.)?(twitter\.com|x\.com)/.+/status/\d+',
             r'https?://t\.co/.+'
         ]
         return any(re.match(pattern, url) for pattern in patterns)
     
-    def extract_video_info(self, url):
-        """Extract video information without downloading"""
+    def extract_space_info(self, url):
+        """Extract Twitter Spaces information without downloading"""
         try:
             url = self.normalize_twitter_url(url)
             
-            if not self.validate_twitter_url(url):
-                raise ValueError("Invalid Twitter URL")
+            if not self.validate_twitter_space_url(url):
+                raise ValueError("Invalid Twitter Spaces URL. Please provide a valid Twitter Spaces link.")
             
             with yt_dlp.YoutubeDL({'quiet': True}) as ydl:
                 info = ydl.extract_info(url, download=False)
                 
                 if not info:
-                    raise ValueError("Could not extract video information")
+                    raise ValueError("Could not extract Twitter Spaces information")
                 
                 if 'entries' in info:
-                    video_info = info['entries'][0] if info['entries'] else None
+                    space_info = info['entries'][0] if info['entries'] else None
                 else:
-                    video_info = info
+                    space_info = info
                 
-                if not video_info:
-                    raise ValueError("No video found in the provided URL")
+                if not space_info:
+                    raise ValueError("No Twitter Spaces found in the provided URL")
                 
                 formats = []
-                if 'formats' in video_info and video_info['formats']:
+                if 'formats' in space_info and space_info['formats']:
                     # 使用字典来存储每个分辨率的最佳格式
                     quality_formats = {}
-                    for fmt in video_info['formats']:
-                        if fmt.get('vcodec') != 'none':  # Only video formats
-                            quality = self.get_quality_label(fmt)
+                    for fmt in space_info['formats']:
+                        # For Spaces, prioritize audio-only formats but also include video formats
+                        if fmt.get('acodec') != 'none':  # Audio formats for Spaces
+                            quality = self.get_audio_quality_label(fmt)
                             # 获取当前格式的文件大小，确保为数字
                             try:
                                 current_size = int(fmt.get('filesize') or 0)
@@ -88,34 +90,55 @@ class TwitterVideoDownloader:
                                     'quality': quality,
                                     'filesize': self.format_filesize(fmt.get('filesize')),
                                     'raw_filesize': current_size,
-                                    'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{fmt.get('ext', 'mp4')}"
+                                    'filename': f"{self.sanitize_filename(space_info.get('title', 'twitter_space'))}.{fmt.get('ext', 'mp4')}"
                                 }
                     
                     # 将去重后的格式添加到列表中（去掉raw_filesize字段）
                     formats = [{k: v for k, v in f.items() if k != 'raw_filesize'} for f in quality_formats.values()]
                 
                 # If no formats found, try the direct URL
-                if not formats and video_info.get('url'):
+                if not formats and space_info.get('url'):
                     formats.append({
                         'format_id': 'direct',
-                        'url': video_info['url'],
-                        'ext': video_info.get('ext', 'mp4'),
-                        'quality': 'Standard Quality',
-                        'filesize': self.format_filesize(video_info.get('filesize')),
-                        'filename': f"{self.sanitize_filename(video_info.get('title', 'video'))}.{video_info.get('ext', 'mp4')}"
+                        'url': space_info['url'],
+                        'ext': space_info.get('ext', 'mp4'),
+                        'quality': 'Standard Audio',
+                        'filesize': self.format_filesize(space_info.get('filesize')),
+                        'filename': f"{self.sanitize_filename(space_info.get('title', 'twitter_space'))}.{space_info.get('ext', 'mp4')}"
                     })
                 
                 return {
-                    'title': video_info.get('title', 'Twitter Video'),
-                    'author': video_info.get('uploader', 'Unknown'),
-                    'duration': self.format_duration(video_info.get('duration')),
-                    'thumbnail': video_info.get('thumbnail', ''),
+                    'title': space_info.get('title', 'Twitter Space'),
+                    'author': space_info.get('uploader', 'Unknown'),
+                    'duration': self.format_duration(space_info.get('duration')),
+                    'thumbnail': space_info.get('thumbnail', ''),
                     'formats': formats[:5] if formats else []
                 }
                 
         except Exception as e:
-            logger.error(f"Error extracting video info: {str(e)}")
-            raise ValueError(f"Failed to extract video information: {str(e)}")
+            logger.error(f"Error extracting Twitter Spaces info: {str(e)}")
+            raise ValueError(f"Failed to extract Twitter Spaces information: {str(e)}")
+    
+    def get_audio_quality_label(self, fmt):
+        """Generate a human-readable audio quality label for Spaces"""
+        abr = fmt.get('abr')  # Audio bitrate
+        acodec = fmt.get('acodec', '')
+        
+        if abr:
+            if abr >= 320:
+                return "High Quality Audio (320kbps)"
+            elif abr >= 192:
+                return "Standard Audio (192kbps)"
+            elif abr >= 128:
+                return "Good Audio (128kbps)"
+            else:
+                return f"Audio ({int(abr)}kbps)"
+        elif 'mp4a' in acodec or 'aac' in acodec:
+            return "AAC Audio"
+        elif 'mp3' in acodec:
+            return "MP3 Audio"
+        else:
+            return "Standard Audio"
     
     def get_quality_label(self, fmt):
         """Generate a human-readable quality label"""
@@ -166,14 +189,14 @@ class TwitterVideoDownloader:
     def sanitize_filename(self, filename):
         """Sanitize filename for safe download"""
         if not filename:
-            return "video"
+            return "twitter_space"
         
         filename = re.sub(r'[<>:"/\\|?*]', '', filename)
         filename = filename.strip().replace(' ', '_')
         return filename[:50]
 
 # Initialize downloader
-downloader = TwitterVideoDownloader()
+downloader = TwitterSpaceDownloader()
 
 class handler(BaseHTTPRequestHandler):
     def _set_headers(self, status_code=200):
@@ -196,25 +219,25 @@ class handler(BaseHTTPRequestHandler):
             
             if not data or 'url' not in data:
                 self._set_headers(400)
-                self.wfile.write(json.dumps({'error': 'URL is required'}).encode('utf-8'))
+                self.wfile.write(json.dumps({'error': 'Twitter Spaces URL is required'}).encode('utf-8'))
                 return
             
             url = data['url']
             format_type = data.get('format', 'mp4')
             
-            logger.info(f"Processing download request for: {url}")
+            logger.info(f"Processing Twitter Spaces download request for: {url}")
             
-            video_info = downloader.extract_video_info(url)
+            space_info = downloader.extract_space_info(url)
             
-            if not video_info['formats']:
+            if not space_info['formats']:
                 self._set_headers(404)
-                self.wfile.write(json.dumps({'error': 'No downloadable video formats found'}).encode('utf-8'))
+                self.wfile.write(json.dumps({'error': 'No downloadable Twitter Spaces formats found'}).encode('utf-8'))
                 return
             
-            logger.info(f"Successfully extracted video info: {video_info['title']}")
+            logger.info(f"Successfully extracted Twitter Spaces info: {space_info['title']}")
             
             self._set_headers(200)
-            self.wfile.write(json.dumps(video_info).encode('utf-8'))
+            self.wfile.write(json.dumps(space_info).encode('utf-8'))
             
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
@@ -223,7 +246,7 @@ class handler(BaseHTTPRequestHandler):
         except Exception as e:
             logger.error(f"Unexpected error: {str(e)}")
             self._set_headers(500)
-            self.wfile.write(json.dumps({'error': 'Internal server error occurred'}).encode('utf-8'))
+            self.wfile.write(json.dumps({'error': 'Internal server error occurred while processing Twitter Spaces'}).encode('utf-8'))
 
     def do_GET(self):
         self._set_headers(405)

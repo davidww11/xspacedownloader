@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download Twitter videos instantly and for free with our fast, secure, and easy-to-use Twitter Video Downloader. No registration required. Save videos in HD quality.">
-    <meta name="keywords" content="twitter video downloader, download twitter video, save twitter video, twitter video download, x video downloader, free twitter downloader">
-    <meta name="author" content="Twitter Video Downloader">
+    <meta name="description" content="Download Twitter Spaces audio recordings instantly and for free with our fast, secure Twitter Space Downloader. Save Twitter Spaces as MP3/MP4 files. No registration required.">
+    <meta name="keywords" content="twitter space downloader, download twitter spaces, save twitter spaces, twitter spaces download, twitter spaces audio download, free twitter space downloader, twitter spaces recording download">
+    <meta name="author" content="Twitter Space Downloader">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Twitter Video Downloader - Download Twitter Videos Free">
-    <meta property="og:description" content="Download Twitter videos instantly and for free. High quality video downloads with no registration required.">
+    <meta property="og:title" content="Twitter Space Downloader - Download Twitter Spaces Audio Free">
+    <meta property="og:description" content="Download Twitter Spaces audio recordings instantly and for free. High quality audio downloads with no registration required.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.pullvideo.com">
-    <meta property="og:image" content="/images/twitter-downloader-preview.jpg">
+    <meta property="og:image" content="/images/twitter-space-downloader-preview.jpg">
     
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Twitter Video Downloader - Download Twitter Videos Free">
-    <meta name="twitter:description" content="Download Twitter videos instantly and for free. High quality video downloads with no registration required.">
-    <meta name="twitter:image" content="/images/twitter-downloader-preview.jpg">
+    <meta name="twitter:title" content="Twitter Space Downloader - Download Twitter Spaces Audio Free">
+    <meta name="twitter:description" content="Download Twitter Spaces audio recordings instantly and for free. High quality audio downloads with no registration required.">
+    <meta name="twitter:image" content="/images/twitter-space-downloader-preview.jpg">
     
-    <title>Twitter Video Downloader - Download Twitter Videos Free</title>
+    <title>Twitter Space Downloader - Download Twitter Spaces Audio Free</title>
     
     <link rel="stylesheet" href="styles.css">
     <link rel="canonical" href="https://www.pullvideo.com">
@@ -39,8 +39,8 @@
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Twitter Video Downloader",
-        "description": "Free Twitter Video Downloader - Download Twitter videos instantly and easily",
+        "name": "Twitter Space Downloader",
+        "description": "Free Twitter Space Downloader - Download Twitter Spaces audio recordings instantly and easily",
         "url": "https://www.pullvideo.com",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "All",
@@ -56,13 +56,13 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <img src="static/images/logo.svg" alt="Twitter Video Downloader Logo" class="site-logo" style="height:32px;width:32px;vertical-align:middle;margin-right:10px;">
-                <h1 style="display:inline-block;vertical-align:middle;margin:0;">Twitter Video Downloader</h1>
-                <p class="tagline">Download Twitter Videos Free & Fast</p>
+                <img src="static/images/logo.svg" alt="Twitter Space Downloader Logo" class="site-logo" style="height:32px;width:32px;vertical-align:middle;margin-right:10px;">
+                <h1 style="display:inline-block;vertical-align:middle;margin:0;">Twitter Space Downloader</h1>
+                <p class="tagline">Download Twitter Spaces Audio Free & Fast</p>
             </div>
             <nav class="nav" role="navigation" aria-label="Main navigation">
                 <ul>
-                    <li><a href="#downloader">Downloader</a></li>
+                    <li><a href="#downloader">Space Downloader</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#how-to">How To Use</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -74,13 +74,13 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h2 class="hero-title">Twitter Video Downloader</h2>
+                <h2 class="hero-title">Twitter Space Downloader</h2>
                 <!--
-                <p class="hero-subtitle">Download Twitter videos instantly for free</p>
+                <p class="hero-subtitle">Download Twitter Spaces audio recordings instantly for free</p>
                 <p class="hero-description">
-                    Save your favorite Twitter videos in high quality with our free Twitter video downloader. 
+                    Save your favorite Twitter Spaces audio content in high quality with our free Twitter Space downloader. 
                     No registration required, no watermarks, and completely free to use. 
-                    Simply paste the Twitter video URL and download instantly.
+                    Simply paste the Twitter Spaces URL and download instantly as MP3 or MP4.
                 </p>
                 -->
             </div>
@@ -88,20 +88,20 @@
 
         <section id="downloader" class="downloader-section">
             <div class="container">
-                <h2>Free Twitter Video Downloader</h2>
+                <h2>Free Twitter Space Downloader</h2>
                 <div class="downloader-wrapper">
                     <div class="downloader-container">
                         <div class="input-section">
                             <div class="input-wrapper">
                                 <input type="url" 
                                        id="twitterUrl" 
-                                       placeholder="Paste Twitter video URL here (e.g., https://twitter.com/username/status/123456789)" 
+                                       placeholder="Paste Twitter Spaces URL here (e.g., https://twitter.com/i/spaces/1234567890)" 
                                        class="url-input"
-                                       aria-label="Twitter video URL">
+                                       aria-label="Twitter Spaces URL">
                                 <button id="pasteBtn" class="paste-btn" type="button" title="Paste from clipboard" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:0.5rem 1rem;font-size:1rem;background:#1d9bf0;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:2;">📋 粘贴</button>
                             </div>
                             <button id="downloadBtn" class="download-btn" type="button">
-                                <span class="btn-text">Download Video</span>
+                                <span class="btn-text">Download Twitter Space</span>
                                 <span class="btn-loading" style="display: none;">
                                     <span class="spinner"></span>
                                     Processing...
@@ -112,17 +112,17 @@
                         <div id="result-section" class="result-section" style="display: none;">
                             <div class="video-info">
                                 <div class="video-thumbnail">
-                                    <img id="videoThumbnail" src="" alt="Video thumbnail" style="display: none;">
+                                    <img id="videoThumbnail" src="" alt="Twitter Space thumbnail" style="display: none;">
                                 </div>
                                 <div class="video-details">
-                                    <h3 id="videoTitle">Video Title</h3>
+                                    <h3 id="videoTitle">Twitter Space Title</h3>
                                     <p id="videoAuthor">@username</p>
                                     <p id="videoDuration">Duration: --:--</p>
                                 </div>
                             </div>
                             
                             <div class="download-options">
-                                <h4>Choose Quality:</h4>
+                                <h4>Choose Format:</h4>
                                 <div id="qualityOptions" class="quality-grid">
                                     <!-- Quality options will be populated here -->
                                 </div>
@@ -142,14 +142,14 @@
 
         <section id="features" class="features-section">
             <div class="container">
-                <h2>Why Choose Our Twitter Video Downloader?</h2>
+                <h2>Why Choose Our Twitter Space Downloader?</h2>
                 <div class="features-grid">
                     <article class="feature">
                         <div class="feature-icon">
                             <span aria-hidden="true">⚡</span>
                         </div>
                         <h3>Lightning Fast</h3>
-                        <p>Download Twitter videos in seconds with our optimized servers and fast processing technology.</p>
+                        <p>Download Twitter Spaces audio in seconds with our optimized servers and fast processing technology.</p>
                     </article>
                     
                     <article class="feature">
@@ -157,7 +157,7 @@
                             <span aria-hidden="true">🆓</span>
                         </div>
                         <h3>100% Free</h3>
-                        <p>Completely free Twitter video downloader with no hidden fees, subscriptions, or registration required.</p>
+                        <p>Completely free Twitter Space downloader with no hidden fees, subscriptions, or registration required.</p>
                     </article>
                     
                     <article class="feature">
@@ -165,7 +165,7 @@
                             <span aria-hidden="true">📱</span>
                         </div>
                         <h3>Mobile Friendly</h3>
-                        <p>Works perfectly on all devices - desktop, tablet, and mobile. Download Twitter videos anywhere, anytime.</p>
+                        <p>Works perfectly on all devices - desktop, tablet, and mobile. Download Twitter Spaces anywhere, anytime.</p>
                     </article>
                     
                     <article class="feature">
@@ -173,15 +173,15 @@
                             <span aria-hidden="true">🔒</span>
                         </div>
                         <h3>Safe & Secure</h3>
-                        <p>Your privacy is protected. We don't store your videos or personal information. Completely secure downloads.</p>
+                        <p>Your privacy is protected. We don't store your Twitter Spaces or personal information. Completely secure downloads.</p>
                     </article>
                     
                     <article class="feature">
                         <div class="feature-icon">
-                            <span aria-hidden="true">🎥</span>
+                            <span aria-hidden="true">🎵</span>
                         </div>
-                        <h3>High Quality</h3>
-                        <p>Download Twitter videos in original quality including HD videos. Multiple format options available.</p>
+                        <h3>High Quality Audio</h3>
+                        <p>Download Twitter Spaces in original quality including high-definition audio. Multiple format options available (MP3, MP4).</p>
                     </article>
                     
                     <article class="feature">
@@ -189,7 +189,7 @@
                             <span aria-hidden="true">🌐</span>
                         </div>
                         <h3>No Software Needed</h3>
-                        <p>Browser-based Twitter video downloader. No need to install any software or browser extensions.</p>
+                        <p>Browser-based Twitter Space downloader. No need to install any software or browser extensions.</p>
                     </article>
                 </div>
             </div>
@@ -197,24 +197,24 @@
 
         <section id="how-to" class="how-to-section">
             <div class="container">
-                <h2>How to Download Twitter Videos</h2>
+                <h2>How to Download Twitter Spaces</h2>
                 <div class="steps-grid">
                     <div class="step">
                         <div class="step-number">1</div>
-                        <h3>Copy Twitter Video URL</h3>
-                        <p>Go to Twitter, find the video you want to download, and copy the tweet URL from your browser's address bar.</p>
+                        <h3>Copy Twitter Space URL</h3>
+                        <p>Go to Twitter, find the Twitter Space you want to download, and copy the Space URL from your browser's address bar or share button.</p>
                     </div>
                     
                     <div class="step">
                         <div class="step-number">2</div>
                         <h3>Paste URL</h3>
-                        <p>Paste the Twitter video URL into the downloader tool above and click the download button.</p>
+                        <p>Paste the Twitter Space URL into the downloader tool above and click the download button to process the audio.</p>
                     </div>
                     
                     <div class="step">
                         <div class="step-number">3</div>
-                        <h3>Download Video</h3>
-                        <p>Choose your preferred video quality and format, then click download to save the Twitter video to your device.</p>
+                        <h3>Download Twitter Space</h3>
+                        <p>Choose your preferred audio format (MP3 or MP4) and quality, then click download to save the Twitter Space to your device.</p>
                     </div>
                 </div>
             </div>
@@ -222,26 +222,208 @@
 
         <section class="faq-section">
             <div class="container">
-                <h2>Frequently Asked Questions</h2>
+                <h2>Frequently Asked Questions About Twitter Space Downloader</h2>
                 <div class="faq-grid">
                     <div class="faq-item">
-                        <h3>Is this Twitter video downloader free?</h3>
-                        <p>Yes, our Twitter video downloader is completely free to use with no hidden costs or subscription fees.</p>
+                        <h3>Is this Twitter Space downloader free?</h3>
+                        <p>Yes, our Twitter Space downloader is completely free to use with no hidden costs or subscription fees.</p>
                     </div>
                     
                     <div class="faq-item">
-                        <h3>Do I need to create an account?</h3>
-                        <p>No registration or account creation is required. Simply paste the Twitter video URL and download instantly.</p>
+                        <h3>Do I need to create an account to download Twitter Spaces?</h3>
+                        <p>No registration or account creation is required. Simply paste the Twitter Space URL and download instantly.</p>
                     </div>
                     
                     <div class="faq-item">
-                        <h3>What video formats are supported?</h3>
-                        <p>We support multiple video formats including MP4, which is compatible with all devices and platforms.</p>
+                        <h3>What audio formats are supported for Twitter Spaces?</h3>
+                        <p>We support multiple audio formats including MP3 and MP4, which are compatible with all devices and platforms.</p>
                     </div>
                     
                     <div class="faq-item">
-                        <h3>Is it safe to use?</h3>
-                        <p>Yes, our service is completely safe and secure. We don't store your videos or collect personal information.</p>
+                        <h3>Can I download live Twitter Spaces?</h3>
+                        <p>Our Twitter Space downloader works best with recorded Spaces. Live Spaces may require the broadcast to end before downloading.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Is it safe to use this Twitter Space downloader?</h3>
+                        <p>Yes, our service is completely safe and secure. We don't store your Twitter Spaces or collect personal information.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>What quality can I download Twitter Spaces in?</h3>
+                        <p>You can download Twitter Spaces in original quality, typically high-quality audio that preserves the conversation clarity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seo-content-section" style="background: #0f1419; padding: 4rem 0;">
+            <div class="container">
+                <h2>About Twitter Space Downloader</h2>
+                <div style="max-width: 800px; margin: 0 auto; line-height: 1.6; color: #8b98a5;">
+                    <p>Our <strong>Twitter Space downloader</strong> is the most reliable and fastest way to download Twitter Spaces audio content. Whether you want to save interesting conversations, interviews, or discussions from Twitter Spaces, our free tool makes it simple and quick.</p>
+                    
+                    <p>Twitter Spaces are live audio conversations that happen on Twitter, and sometimes you want to save these valuable discussions for later listening. Our <strong>Twitter Space downloader</strong> allows you to easily convert and download these audio broadcasts in high quality.</p>
+                    
+                    <p>With our advanced <strong>Twitter Space downloader</strong>, you can:</p>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li>Download Twitter Spaces in multiple audio formats</li>
+                        <li>Save high-quality audio recordings</li>
+                        <li>Access downloaded content offline</li>
+                        <li>Share interesting Twitter Spaces with friends</li>
+                        <li>Build your personal archive of valuable conversations</li>
+                    </ul>
+                    
+                    <p>Our <strong>Twitter Space downloader</strong> is designed to be user-friendly, requiring no technical knowledge. Simply paste the Twitter Space URL, choose your preferred format, and download instantly. The tool works on all devices and browsers, making it the perfect solution for anyone who wants to save Twitter Spaces content.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits-section" style="background: #16202a; padding: 4rem 0;">
+            <div class="container">
+                <h2>Benefits of Using Our Twitter Space Downloader</h2>
+                <div class="benefits-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">Free Twitter Space Downloader</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Unlike other tools that charge for premium features, our Twitter Space downloader is completely free. Download unlimited Twitter Spaces without any restrictions or hidden fees.</p>
+                    </div>
+                    
+                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">High-Quality Audio Downloads</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Our Twitter Space downloader preserves the original audio quality, ensuring you get crisp, clear recordings of your favorite Twitter Spaces conversations.</p>
+                    </div>
+                    
+                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">No Registration Required</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Start using our Twitter Space downloader immediately without creating an account. Simply paste the URL and download - it's that easy!</p>
+                    </div>
+                    
+                    <div class="benefit-item" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <h3 style="color: #1d9bf0; margin-bottom: 1rem;">Multiple Format Support</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Download Twitter Spaces in various formats including MP3 for audio-only and MP4 for video recordings, compatible with all devices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="comparison-section" style="background: #0f1419; padding: 4rem 0;">
+            <div class="container">
+                <h2>Why Choose Our Twitter Space Downloader Over Others?</h2>
+                <div style="max-width: 1000px; margin: 2rem auto;">
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: #16202a; border-radius: 12px; overflow: hidden;">
+                            <thead>
+                                <tr style="background: #1d9bf0;">
+                                    <th style="padding: 1rem; text-align: left; color: white;">Feature</th>
+                                    <th style="padding: 1rem; text-align: center; color: white;">Our Twitter Space Downloader</th>
+                                    <th style="padding: 1rem; text-align: center; color: white;">Other Tools</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #2f3336;">
+                                    <td style="padding: 1rem; color: #e7e9ea;">Free to Use</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ 100% Free</td>
+                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Premium Required</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #2f3336;">
+                                    <td style="padding: 1rem; color: #e7e9ea;">No Registration</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ No Account Needed</td>
+                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Registration Required</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #2f3336;">
+                                    <td style="padding: 1rem; color: #e7e9ea;">Audio Quality</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Original Quality</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ffad1f;">⚠️ Compressed</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #2f3336;">
+                                    <td style="padding: 1rem; color: #e7e9ea;">Download Speed</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Lightning Fast</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ffad1f;">⚠️ Slow Processing</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #2f3336;">
+                                    <td style="padding: 1rem; color: #e7e9ea;">Mobile Support</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ Full Mobile Support</td>
+                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Desktop Only</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; color: #e7e9ea;">Privacy Protection</td>
+                                    <td style="padding: 1rem; text-align: center; color: #00ba7c;">✅ No Data Stored</td>
+                                    <td style="padding: 1rem; text-align: center; color: #f91880;">❌ Data Collection</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="use-cases-section" style="background: #16202a; padding: 4rem 0;">
+            <div class="container">
+                <h2>Popular Use Cases for Twitter Space Downloader</h2>
+                <div class="use-cases-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎙️</div>
+                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Podcast Content Creation</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Content creators use our Twitter Space downloader to save valuable conversations for podcast episodes or content repurposing.</p>
+                    </div>
+                    
+                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📚</div>
+                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Educational Content</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Students and educators download Twitter Spaces containing lectures, discussions, and educational content for offline study.</p>
+                    </div>
+                    
+                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
+                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Business Research</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Professionals save industry discussions and expert interviews from Twitter Spaces for market research and business insights.</p>
+                    </div>
+                    
+                    <div class="use-case" style="background: #0f1419; padding: 2rem; border-radius: 12px; border: 1px solid #2f3336;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎵</div>
+                        <h3 style="color: #e7e9ea; margin-bottom: 1rem;">Music & Entertainment</h3>
+                        <p style="color: #8b98a5; line-height: 1.6;">Music fans download Twitter Spaces featuring live performances, artist interviews, and exclusive content from their favorite musicians.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-section" style="background: #0f1419; padding: 4rem 0;">
+            <div class="container">
+                <h2>Tips for Using Twitter Space Downloader Effectively</h2>
+                <div style="max-width: 800px; margin: 2rem auto;">
+                    <div class="tips-list">
+                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
+                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">1</div>
+                            <div>
+                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Check Twitter Spaces Availability</h3>
+                                <p style="color: #8b98a5; line-height: 1.6;">Our Twitter Space downloader works best with recorded Spaces. Live Spaces may need to finish before downloading is possible.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
+                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">2</div>
+                            <div>
+                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Choose the Right Format</h3>
+                                <p style="color: #8b98a5; line-height: 1.6;">Select MP3 for audio-only files (smaller size) or MP4 to preserve any visual elements from the Twitter Spaces.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="tip-item" style="display: flex; align-items: flex-start; margin-bottom: 2rem; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
+                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">3</div>
+                            <div>
+                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Copy the Correct URL</h3>
+                                <p style="color: #8b98a5; line-height: 1.6;">Make sure to copy the full Twitter Spaces URL from the address bar or share button for best results with our downloader.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="tip-item" style="display: flex; align-items: flex-start; padding: 1.5rem; background: #16202a; border-radius: 12px; border-left: 4px solid #1d9bf0;">
+                            <div style="background: #1d9bf0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 1rem; flex-shrink: 0;">4</div>
+                            <div>
+                                <h3 style="color: #e7e9ea; margin-bottom: 0.5rem;">Respect Copyright and Privacy</h3>
+                                <p style="color: #8b98a5; line-height: 1.6;">Only download Twitter Spaces content you have permission to save, and respect the privacy and copyright of content creators.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -252,8 +434,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Twitter Video Downloader</h3>
-                    <p>The fastest and most reliable way to download Twitter videos for free. Available worldwide.</p>
+                    <h3>Twitter Space Downloader</h3>
+                    <p>The fastest and most reliable way to download Twitter Spaces audio for free. Available worldwide.</p>
                 </div>
                 
                 <div class="footer-section">
@@ -266,7 +448,7 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#downloader">Video Downloader</a></li>
+                        <li><a href="#downloader">Twitter Space Downloader</a></li>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#how-to">How to Use</a></li>
                         <li><a href="#">Privacy Policy</a></li>
@@ -276,12 +458,12 @@
                 
                 <div class="footer-section">
                     <h3>Legal</h3>
-                    <p>This tool is for downloading videos you own or have permission to download. Please respect copyright laws and Twitter's terms of service.</p>
+                    <p>This Twitter Space downloader is for downloading audio content you own or have permission to download. Please respect copyright laws and Twitter's terms of service.</p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 Twitter Video Downloader. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">DMCA</a></p>
+                <p>&copy; 2024 Twitter Space Downloader. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">DMCA</a></p>
             </div>
         </div>
     </footer>
@@ -297,7 +479,7 @@
         </script>
     </div>
     <script>
-        class TwitterVideoDownloader {
+        class TwitterSpaceDownloader {
             constructor() {
                 this.initializeElements();
                 this.bindEvents();
@@ -340,14 +522,18 @@
 
             validateUrl() {
                 const url = this.urlInput.value.trim();
-                const isValid = this.isValidTwitterUrl(url);
+                const isValid = this.isValidTwitterSpaceUrl(url);
                 this.downloadBtn.disabled = !isValid || !url;
                 return isValid;
             }
 
-            isValidTwitterUrl(url) {
+            isValidTwitterSpaceUrl(url) {
                 const patterns = [
+                    // Twitter Spaces direct URLs
+                    /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/i\/spaces\/\w+/,
+                    // Twitter posts that may contain Spaces
                     /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/\w+\/status\/\d+/,
+                    // Shortened Twitter links
                     /^https?:\/\/t\.co\/\w+/
                 ];
                 return patterns.some(pattern => pattern.test(url));
@@ -355,7 +541,7 @@
 
             async handleDownload() {
                 if (!this.validateUrl()) {
-                    this.showError('Please enter a valid Twitter/X video URL');
+                    this.showError('Please enter a valid Twitter/X Space URL');
                     return;
                 }
 
@@ -385,7 +571,7 @@
                     console.error('Download error:', error);
                     
                     // Provide more detailed error information
-                    let errorMessage = 'Failed to download video. Please try again.';
+                    let errorMessage = 'Failed to download space. Please try again.';
                     
                     if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
                         errorMessage = '❌ Network connection failed. Please check:\n' +
@@ -416,7 +602,7 @@
                 const qualityOptions = document.getElementById('qualityOptions');
 
                 // Update video info
-                videoTitle.textContent = data.title || 'Twitter Video';
+                videoTitle.textContent = data.title || 'Twitter Space';
                 videoAuthor.textContent = data.author || '@unknown';
                 videoDuration.textContent = `Duration: ${data.duration || 'Unknown'}`;
 
@@ -441,7 +627,7 @@
                                 <div class="quality-label">${format.quality || 'Standard Quality'}</div>
                                 <div class="quality-details">${format.ext?.toUpperCase() || 'MP4'} • ${format.filesize || 'Unknown size'}</div>
                             </div>
-                            <button class="quality-download-btn" onclick="window.downloadFile('${format.url}', '${format.filename || 'video'}')">
+                            <button class="quality-download-btn" onclick="window.downloadFile('${format.url}', '${format.filename || 'space'}')">
                                 Download
                             </button>
                         `;
@@ -458,7 +644,7 @@
                             <div class="quality-label">Download</div>
                             <div class="quality-details">${data.format?.toUpperCase() || 'MP4'}</div>
                         </div>
-                        <button class="quality-download-btn" onclick="window.downloadFile('${data.download_url}', '${data.filename || 'video'}')">
+                        <button class="quality-download-btn" onclick="window.downloadFile('${data.download_url}', '${data.filename || 'space'}')">
                             Download
                         </button>
                     `;
@@ -504,7 +690,7 @@
                     const blobUrl = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = blobUrl;
-                    a.download = filename || 'video.mp4';
+                    a.download = filename || 'space.mp4';
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.click();
@@ -519,7 +705,7 @@
 
         // Initialize the downloader when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            new TwitterVideoDownloader();
+            new TwitterSpaceDownloader();
         });
     </script>
 </body>

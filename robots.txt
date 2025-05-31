@@ -1,3 +1,22 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.pullvideo.com/sitemap.xml 
+
+# Twitter Space Downloader specific pages
+Allow: /twitter-space-downloader
+Allow: /how-to-download-twitter-spaces
+Allow: /twitter-spaces-audio-download
+
+# Static assets
+Allow: /static/
+Allow: /images/
+Allow: /css/
+Allow: /js/
+
+# API endpoints
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.pullvideo.com/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1 
