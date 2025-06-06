@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Twitter Space Downloader specific pages
-Allow: /twitter-space-downloader
-Allow: /how-to-download-twitter-spaces
-Allow: /twitter-spaces-audio-download
+# Allow all main pages
+Allow: /index.html
+Allow: /*.html
 
 # Static assets
 Allow: /static/
@@ -12,8 +11,17 @@ Allow: /images/
 Allow: /css/
 Allow: /js/
 
-# API endpoints
+# Disallow API endpoints and sensitive files
 Disallow: /api/
+Disallow: /.git/
+Disallow: /app.py
+Disallow: /run.py
+Disallow: /requirements.txt
+Disallow: /requirements-dev.txt
+Disallow: /vercel.json
+Disallow: /wrangler.toml
+Disallow: /*.md
+Disallow: /.DS_Store
 
 # Sitemap location
 Sitemap: https://www.pullvideo.com/sitemap.xml
