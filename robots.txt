@@ -1,30 +1,5 @@
 User-agent: *
 Allow: /
 
-# Allow all main pages
-Allow: /index.html
-Allow: /*.html
-
-# Static assets
-Allow: /static/
-Allow: /images/
-Allow: /css/
-Allow: /js/
-
-# Disallow API endpoints and sensitive files
-Disallow: /api/
-Disallow: /.git/
-Disallow: /app.py
-Disallow: /run.py
-Disallow: /requirements.txt
-Disallow: /requirements-dev.txt
-Disallow: /vercel.json
-Disallow: /wrangler.toml
-Disallow: /*.md
-Disallow: /.DS_Store
-
 # Sitemap location
-Sitemap: https://www.pullvideo.com/sitemap.xml
-
-# Crawl delay for respectful crawling
-Crawl-delay: 1 
+Sitemap: https://www.pullvideo.com/sitemap.xml 
