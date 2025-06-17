@@ -1,9 +1,26 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/twitter-spaces-audio-download",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/twitter-space-downloader",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-download-twitter-spaces",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/",
-      "destination": "/static/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/static/(.*)",
